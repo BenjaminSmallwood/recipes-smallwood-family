@@ -32,6 +32,14 @@ const categories = Object.keys(grouped).sort();
   class="fixed left-0 top-[57px] bottom-0 z-40 w-[300px] -translate-x-full overflow-y-auto border-r border-border bg-sidebar p-4 transition-transform md:translate-x-0 dark:border-border-dark dark:bg-sidebar-dark"
   transition:persist
 >
+  <div class="mb-3 md:hidden">
+    <input
+      id="recipe-search-mobile"
+      type="search"
+      placeholder="Search recipes..."
+      class="w-full rounded-lg border border-border bg-white px-3 py-1.5 text-sm outline-none focus:border-primary dark:border-border-dark dark:bg-gray-800 dark:text-text-dark"
+    />
+  </div>
   <div id="sidebar-recipes" class="space-y-2">
     {categories.map((category) => (
       <details class="recipe-category group" open>

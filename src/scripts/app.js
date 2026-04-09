@@ -32,13 +32,11 @@ function initSidebarToggle() {
 
 // ── Search Filtering ──
 function initSearch() {
-  const input = document.getElementById("recipe-search");
-  if (!input) return;
+  const desktop = document.getElementById("recipe-search");
+  const mobile = document.getElementById("recipe-search-mobile");
 
-  input.addEventListener("input", () => {
-    const query = input.value.toLowerCase().trim();
+  function filterRecipes(query) {
     const categories = document.querySelectorAll(".recipe-category");
-
     categories.forEach((cat) => {
       const links = cat.querySelectorAll(".recipe-link");
       let anyVisible = false;
@@ -53,7 +51,18 @@ function initSearch() {
       cat.style.display = anyVisible ? "" : "none";
       if (query && anyVisible) cat.open = true;
     });
-  });
+  }
+
+  function onInput(e) {
+    const query = e.target.value.toLowerCase().trim();
+    // Sync both inputs
+    if (desktop && e.target !== desktop) desktop.value = e.target.value;
+    if (mobile && e.target !== mobile) mobile.value = e.target.value;
+    filterRecipes(query);
+  }
+
+  if (desktop) desktop.addEventListener("input", onInput);
+  if (mobile) mobile.addEventListener("input", onInput);
 }
 
 // ── Recipe Scaling ──
@@ -141,11 +150,79 @@ function initScaling() {
   }
 }
 
+// ── Active Sidebar Link ──
+function updateActiveLink() {
+  const path = window.location.pathname.replace(/\/$/, "");
+  document.querySelectorAll(".recipe-link").forEach((link) => {
+    const href = link.getAttribute("href").replace(/\/$/, "");
+    if (href === path) {
+      link.className = "recipe-link block rounded-lg px-3 py-1.5 text-sm transition-colors bg-primary/10 text-primary font-medium";
+    } else {
+      link.className = "recipe-link block rounded-lg px-3 py-1.5 text-sm transition-colors hover:bg-gray-100 dark:hover:bg-gray-800";
+    }
+  });
+}
+
+// ── Wake Lock ──
+let wakeLock = null;
+
+function initWakeLock() {
+  const toggle = document.getElementById("wake-lock-toggle");
+  const icon = document.getElementById("wake-lock-icon");
+  if (!toggle || !("wakeLock" in navigator)) {
+    if (toggle) toggle.style.display = "none";
+    return;
+  }
+
+  function updateUI(active) {
+    if (active) {
+      toggle.classList.add("text-primary");
+      icon.setAttribute("fill", "currentColor");
+    } else {
+      toggle.classList.remove("text-primary");
+      icon.setAttribute("fill", "none");
+    }
+  }
+
+  // Restore state if it was previously on
+  updateUI(wakeLock !== null);
+
+  toggle.addEventListener("click", async () => {
+    if (wakeLock) {
+      await wakeLock.release();
+      wakeLock = null;
+      updateUI(false);
+    } else {
+      try {
+        wakeLock = await navigator.wakeLock.request("screen");
+        wakeLock.addEventListener("release", () => {
+          wakeLock = null;
+          updateUI(false);
+        });
+        updateUI(true);
+      } catch (e) {
+        // Wake lock request failed (e.g. low battery)
+      }
+    }
+  });
+
+  // Re-acquire wake lock when page becomes visible again
+  document.addEventListener("visibilitychange", async () => {
+    if (document.visibilityState === "visible" && wakeLock !== null) {
+      try {
+        wakeLock = await navigator.wakeLock.request("screen");
+      } catch (e) {}
+    }
+  });
+}
+
 // ── Initialize ──
 function init() {
   initSidebarToggle();
   initSearch();
   initScaling();
+  updateActiveLink();
+  initWakeLock();
 }
 
 // Run on initial load and after view transitions
