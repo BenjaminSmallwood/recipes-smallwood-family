@@ -2,24 +2,29 @@ media:
   input: public
   output: /
 content:
-  - name: posts
-    label: Posts
+  - name: recipes
+    label: Recipes
     type: collection
     path: src/content/blog
     view:
-      fields: [ title, draft, date ]
+      fields: [title, category, cookTime]
     fields:
-      - { name: author, label: Author, type: string }
-      - { name: pubDatetime, label: Date, type: date }
-      - { name: modDatetime, label: Date, type: date }
       - { name: title, label: Title, type: string, required: true }
-      - { name: ogImage, label: Title, type: string }
-      - { name: slug, label: Slug, type: string }
-      - { name: featured, label: Featured, type: boolean }
-      - { name: draft, label: Draft, type: boolean }
+      - { name: category, label: Category, type: string, required: true }
+      - { name: image, label: Image, type: image }
+      - { name: cookTime, label: Cook Time, type: string }
+      - { name: prepTime, label: Prep Time, type: string }
+      - { name: servings, label: Servings, type: number, required: true }
       - { name: tags, label: Tags, type: string, list: true }
-      - { name: description, label: Description, type: string }
-      - { name: body, label: Body, type: rich-text }
+      - name: ingredients
+        label: Ingredients
+        type: object
+        list: true
+        fields:
+          - { name: name, label: Name, type: string, required: true }
+          - { name: quantity, label: Quantity, type: number, required: true }
+          - { name: unit, label: Unit, type: string }
+      - { name: body, label: Instructions, type: rich-text }
   - name: about
     label: About page
     type: file

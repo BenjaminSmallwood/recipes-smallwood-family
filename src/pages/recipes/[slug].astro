@@ -1,0 +1,28 @@
+---
+import { getCollection } from "astro:content";
+import RecipeLayout from "../../layouts/RecipeLayout.astro";
+import RecipeView from "../../components/RecipeView.astro";
+
+export async function getStaticPaths() {
+  const recipes = await getCollection("recipes");
+  return recipes.map((recipe) => ({
+    params: { slug: recipe.id },
+    props: { recipe },
+  }));
+}
+
+const { recipe } = Astro.props;
+const { data, body } = recipe;
+---
+
+<RecipeLayout title={`${data.title} | Smallwood Family Recipes`} currentSlug={recipe.id}>
+  <RecipeView
+    title={data.title}
+    image={data.image}
+    cookTime={data.cookTime}
+    prepTime={data.prepTime}
+    servings={data.servings}
+    ingredients={data.ingredients}
+    body={body}
+  />
+</RecipeLayout>

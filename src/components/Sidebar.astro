@@ -1,0 +1,78 @@
+---
+interface Recipe {
+  id: string;
+  data: {
+    title: string;
+    category: string;
+  };
+}
+
+interface Props {
+  recipes: Recipe[];
+  currentSlug?: string;
+}
+
+const { recipes, currentSlug } = Astro.props;
+
+const grouped = recipes.reduce(
+  (acc, recipe) => {
+    const cat = recipe.data.category;
+    if (!acc[cat]) acc[cat] = [];
+    acc[cat].push(recipe);
+    return acc;
+  },
+  {} as Record<string, Recipe[]>
+);
+
+const categories = Object.keys(grouped).sort();
+---
+
+<nav
+  id="sidebar"
+  class="fixed left-0 top-[57px] bottom-0 z-40 w-[300px] -translate-x-full overflow-y-auto border-r border-border bg-sidebar p-4 transition-transform md:translate-x-0 dark:border-border-dark dark:bg-sidebar-dark"
+  transition:persist
+>
+  <div id="sidebar-recipes" class="space-y-2">
+    {categories.map((category) => (
+      <details class="recipe-category group" open>
+        <summary class="flex cursor-pointer items-center justify-between rounded-lg px-3 py-2 font-semibold text-sm hover:bg-gray-100 dark:hover:bg-gray-800 select-none">
+          <span>{category}</span>
+          <svg class="h-4 w-4 transition-transform group-open:rotate-90" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+          </svg>
+        </summary>
+        <ul class="mt-1 space-y-0.5 pl-2">
+          {grouped[category].map((recipe) => (
+            <li>
+              <a
+                href={`/recipes/${recipe.id}`}
+                class:list={[
+                  "recipe-link block rounded-lg px-3 py-1.5 text-sm transition-colors",
+                  recipe.id === currentSlug
+                    ? "bg-primary/10 text-primary font-medium"
+                    : "hover:bg-gray-100 dark:hover:bg-gray-800",
+                ]}
+                data-title={recipe.data.title.toLowerCase()}
+              >
+                {recipe.data.title}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </details>
+    ))}
+  </div>
+</nav>
+
+<!-- Overlay for mobile -->
+<div
+  id="sidebar-overlay"
+  class="fixed inset-0 top-[57px] z-30 hidden bg-black/40 md:hidden"
+></div>
+
+<script is:inline>
+  // Collapse categories on mobile
+  if (window.innerWidth < 768) {
+    document.querySelectorAll('.recipe-category').forEach(d => d.open = false);
+  }
+</script>

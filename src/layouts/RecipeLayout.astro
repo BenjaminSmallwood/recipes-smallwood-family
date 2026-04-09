@@ -1,0 +1,27 @@
+---
+import BaseLayout from "./BaseLayout.astro";
+import TopBar from "../components/TopBar.astro";
+import Sidebar from "../components/Sidebar.astro";
+import { getCollection } from "astro:content";
+
+interface Props {
+  title?: string;
+  currentSlug?: string;
+}
+
+const { title, currentSlug } = Astro.props;
+
+const recipes = await getCollection("recipes");
+const sortedRecipes = recipes.sort((a, b) => a.data.title.localeCompare(b.data.title));
+---
+
+<BaseLayout title={title}>
+  <TopBar />
+  <Sidebar recipes={sortedRecipes} currentSlug={currentSlug} />
+
+  <main class="pt-[57px] md:ml-[300px]">
+    <div class="p-6 md:p-8">
+      <slot />
+    </div>
+  </main>
+</BaseLayout>

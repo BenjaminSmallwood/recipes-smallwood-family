@@ -1,0 +1,161 @@
+---
+interface Ingredient {
+  name: string;
+  quantity: number;
+  unit: string;
+}
+
+interface Props {
+  title: string;
+  image?: string;
+  cookTime?: string;
+  prepTime?: string;
+  servings: number;
+  ingredients: Ingredient[];
+  body: string;
+}
+
+const { title, image, cookTime, prepTime, servings, ingredients, body } = Astro.props;
+
+function formatQuantity(qty: number): string {
+  const fractions: Record<string, string> = {
+    "0.125": "⅛",
+    "0.25": "¼",
+    "0.33": "⅓",
+    "0.333": "⅓",
+    "0.5": "½",
+    "0.67": "⅔",
+    "0.667": "⅔",
+    "0.75": "¾",
+  };
+
+  const whole = Math.floor(qty);
+  const frac = Math.round((qty - whole) * 1000) / 1000;
+
+  if (frac === 0) return whole.toString();
+
+  const fracStr = fractions[frac.toString()];
+  if (fracStr) {
+    return whole > 0 ? `${whole} ${fracStr}` : fracStr;
+  }
+
+  return Number(qty.toFixed(2)).toString();
+}
+
+// Process body to replace {ingredient} with spans
+function processInstructions(bodyText: string, ings: Ingredient[]): string {
+  let processed = bodyText;
+  for (const ing of ings) {
+    const regex = new RegExp(`\\{${ing.name.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}\\}`, "g");
+    const display = `${formatQuantity(ing.quantity)}${ing.unit ? " " + ing.unit : ""} ${ing.name}`;
+    processed = processed.replace(
+      regex,
+      `<span class="ingredient-ref font-semibold text-primary" data-ingredient="${ing.name}">${display}</span>`
+    );
+  }
+  return processed;
+}
+
+const processedBody = processInstructions(body, ingredients);
+
+// Convert markdown-ish numbered list to HTML
+function bodyToHtml(text: string): string {
+  const lines = text.trim().split("\n");
+  let html = "<ol class='space-y-3 list-decimal list-inside'>";
+  for (const line of lines) {
+    const match = line.match(/^\d+\.\s+(.*)/);
+    if (match) {
+      html += `<li class="leading-relaxed">${match[1]}</li>`;
+    }
+  }
+  html += "</ol>";
+  return html;
+}
+
+const instructionsHtml = bodyToHtml(processedBody);
+---
+
+<article id="recipe-view" class="max-w-3xl mx-auto" data-base-servings={servings}>
+  <h1 class="text-3xl font-bold mb-4">{title}</h1>
+
+  {image && (
+    <div class="mb-6 overflow-hidden rounded-xl">
+      <img
+        src={image}
+        alt={title}
+        class="w-full h-64 object-cover bg-gray-100 dark:bg-gray-800"
+        onerror="this.style.display='none'"
+      />
+    </div>
+  )}
+
+  <div class="flex flex-wrap gap-4 mb-6 text-sm">
+    {prepTime && (
+      <div class="flex items-center gap-1.5 rounded-lg bg-gray-100 px-3 py-1.5 dark:bg-gray-800">
+        <svg class="h-4 w-4 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+        <span>Prep: {prepTime}</span>
+      </div>
+    )}
+    {cookTime && (
+      <div class="flex items-center gap-1.5 rounded-lg bg-gray-100 px-3 py-1.5 dark:bg-gray-800">
+        <svg class="h-4 w-4 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 18.657A8 8 0 016.343 7.343S7 9 9 10c0-2 .5-5 2.986-7C14 5 16.09 5.777 17.656 7.343A7.975 7.975 0 0120 13a7.975 7.975 0 01-2.343 5.657z" />
+        </svg>
+        <span>Cook: {cookTime}</span>
+      </div>
+    )}
+  </div>
+
+  <!-- Servings scaler -->
+  <div class="mb-6 flex items-center gap-3 rounded-lg border border-border bg-gray-50 px-4 py-3 dark:border-border-dark dark:bg-gray-800/50">
+    <label for="servings-input" class="text-sm font-medium">Servings:</label>
+    <div class="flex items-center gap-1">
+      <button
+        id="servings-decrease"
+        class="rounded-md bg-gray-200 px-2 py-0.5 text-lg font-bold hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600"
+        aria-label="Decrease servings"
+      >−</button>
+      <input
+        id="servings-input"
+        type="number"
+        value={servings}
+        min="1"
+        class="w-16 rounded-md border border-border bg-white px-2 py-1 text-center text-sm dark:border-border-dark dark:bg-gray-800"
+      />
+      <button
+        id="servings-increase"
+        class="rounded-md bg-gray-200 px-2 py-0.5 text-lg font-bold hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600"
+        aria-label="Increase servings"
+      >+</button>
+    </div>
+    <span class="text-xs text-gray-500">(original: {servings})</span>
+  </div>
+
+  <!-- Ingredients -->
+  <div class="mb-8">
+    <h2 class="text-xl font-bold mb-3">Ingredients</h2>
+    <ul class="space-y-2">
+      {ingredients.map((ing) => (
+        <li
+          class="ingredient-item flex items-baseline gap-2 rounded px-2 py-1 hover:bg-gray-50 dark:hover:bg-gray-800/50"
+          data-base-qty={ing.quantity}
+          data-unit={ing.unit}
+          data-name={ing.name}
+        >
+          <span class="ingredient-qty font-semibold text-primary min-w-[4rem]">
+            {formatQuantity(ing.quantity)}{ing.unit ? ` ${ing.unit}` : ""}
+          </span>
+          <span>{ing.name}</span>
+        </li>
+      ))}
+    </ul>
+  </div>
+
+  <!-- Instructions -->
+  <div class="mb-8">
+    <h2 class="text-xl font-bold mb-3">Instructions</h2>
+    <div class="instructions-body" set:html={instructionsHtml} />
+  </div>
+</article>
