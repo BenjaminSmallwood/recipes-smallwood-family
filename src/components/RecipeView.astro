@@ -108,29 +108,23 @@ const instructionsHtml = bodyToHtml(processedBody);
     )}
   </div>
 
-  <!-- Servings scaler -->
+  <!-- Multiplier -->
   <div class="mb-6 flex items-center gap-3 rounded-lg border border-border bg-gray-50 px-4 py-3 dark:border-border-dark dark:bg-gray-800/50">
-    <label for="servings-input" class="text-sm font-medium">Servings:</label>
+    <span class="text-sm font-medium">Multiply:</span>
     <div class="flex items-center gap-1">
       <button
-        id="servings-decrease"
+        id="multiplier-decrease"
         class="rounded-md bg-gray-200 px-2 py-0.5 text-lg font-bold hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600"
-        aria-label="Decrease servings"
+        aria-label="Decrease multiplier"
       >−</button>
-      <input
-        id="servings-input"
-        type="number"
-        value={servings}
-        min="1"
-        class="w-16 rounded-md border border-border bg-white px-2 py-1 text-center text-sm dark:border-border-dark dark:bg-gray-800"
-      />
+      <span id="multiplier-display" class="w-16 text-center text-sm font-semibold text-primary">×1</span>
       <button
-        id="servings-increase"
+        id="multiplier-increase"
         class="rounded-md bg-gray-200 px-2 py-0.5 text-lg font-bold hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600"
-        aria-label="Increase servings"
+        aria-label="Increase multiplier"
       >+</button>
     </div>
-    <span class="text-xs text-gray-500">(original: {servings})</span>
+    <span class="text-xs text-gray-500">Serves {servings} per batch</span>
   </div>
 
   <!-- Ingredients -->

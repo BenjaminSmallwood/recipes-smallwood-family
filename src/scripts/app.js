@@ -1,15 +1,3 @@
-// ── Dark Mode Toggle ──
-function initDarkMode() {
-  const toggle = document.getElementById("dark-mode-toggle");
-  if (!toggle) return;
-
-  toggle.addEventListener("click", () => {
-    document.documentElement.classList.toggle("dark");
-    const isDark = document.documentElement.classList.contains("dark");
-    localStorage.setItem("theme", isDark ? "dark" : "light");
-  });
-}
-
 // ── Sidebar Toggle (mobile) ──
 function initSidebarToggle() {
   const toggle = document.getElementById("sidebar-toggle");
@@ -73,11 +61,12 @@ function initScaling() {
   const view = document.getElementById("recipe-view");
   if (!view) return;
 
-  const baseServings = Number(view.dataset.baseServings);
-  const input = document.getElementById("servings-input");
-  const decrease = document.getElementById("servings-decrease");
-  const increase = document.getElementById("servings-increase");
-  if (!input) return;
+  const display = document.getElementById("multiplier-display");
+  const decrease = document.getElementById("multiplier-decrease");
+  const increase = document.getElementById("multiplier-increase");
+  if (!display) return;
+
+  let multiplier = 1;
 
   function formatQuantity(qty) {
     const fractions = {
@@ -94,7 +83,6 @@ function initScaling() {
 
     if (frac === 0) return whole.toString();
 
-    // Check common fractions
     let closest = null;
     let closestDiff = Infinity;
     for (const [key, symbol] of Object.entries(fractions)) {
@@ -113,45 +101,41 @@ function initScaling() {
   }
 
   function updateScale() {
-    const newServings = Math.max(1, Number(input.value) || baseServings);
-    const scale = newServings / baseServings;
+    display.textContent = `×${multiplier}`;
 
-    // Update ingredient list items
     document.querySelectorAll(".ingredient-item").forEach((item) => {
       const baseQty = Number(item.dataset.baseQty);
       const unit = item.dataset.unit || "";
-      const scaled = baseQty * scale;
+      const scaled = baseQty * multiplier;
       const qtyEl = item.querySelector(".ingredient-qty");
       if (qtyEl) {
         qtyEl.textContent = formatQuantity(scaled) + (unit ? ` ${unit}` : "");
       }
     });
 
-    // Update inline ingredient references in instructions
     document.querySelectorAll(".ingredient-ref").forEach((span) => {
       const name = span.dataset.ingredient;
       const item = document.querySelector(`.ingredient-item[data-name="${name}"]`);
       if (!item) return;
       const baseQty = Number(item.dataset.baseQty);
       const unit = item.dataset.unit || "";
-      const scaled = baseQty * scale;
+      const scaled = baseQty * multiplier;
       span.textContent = `${formatQuantity(scaled)}${unit ? " " + unit : ""} ${name}`;
     });
   }
 
-  input.addEventListener("input", updateScale);
-  input.addEventListener("change", updateScale);
-
   if (decrease) {
     decrease.addEventListener("click", () => {
-      input.value = Math.max(1, Number(input.value) - 1);
-      updateScale();
+      if (multiplier > 1) {
+        multiplier--;
+        updateScale();
+      }
     });
   }
 
   if (increase) {
     increase.addEventListener("click", () => {
-      input.value = Number(input.value) + 1;
+      multiplier++;
       updateScale();
     });
   }
@@ -159,7 +143,6 @@ function initScaling() {
 
 // ── Initialize ──
 function init() {
-  initDarkMode();
   initSidebarToggle();
   initSearch();
   initScaling();
