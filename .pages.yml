@@ -6,6 +6,7 @@ content:
     label: Recipes
     type: collection
     path: src/content/blog
+    filename: "{fields.title}"
     view:
       fields: [title, category, cookTime]
     fields:
@@ -25,11 +26,3 @@ content:
           - { name: quantity, label: Quantity, type: number, required: true }
           - { name: unit, label: Unit, type: string }
       - { name: body, label: Instructions, type: rich-text }
-  - name: about
-    label: About page
-    type: file
-    path: src/pages/about.md
-    fields:
-      - { name: layout, type: string, hidden: true, default: "../layouts/AboutLayout.astro" }
-      - { name: title, label: Title, type: string }
-      - { name: body, label: Body, type: rich-text, options: { input: public/assets, output: /assets } }
