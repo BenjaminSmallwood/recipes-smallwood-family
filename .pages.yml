@@ -6,7 +6,7 @@ content:
     label: Recipes
     type: collection
     path: src/content/blog
-    filename: "{fields.title}"
+    filename: "{slug}"
     view:
       fields: [title, category, cookTime]
     fields:
