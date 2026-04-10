@@ -23,7 +23,7 @@ ingredients:
     quantity: 15
     unit: oz
 ---
-1. In a medium skillet, brown and crumble {Ground Beef} with {Chopped Celery}, {Small Onion}, and {Minced Garlic} over medium high heat (until meat is completely brown and vegetables are tender.) Season with a little salt and pepper, to taste
+1. In a medium skillet, brown and crumble {Ground Beef} with {Chopped Celery}, {Small Onion Finely Diced}, and {Minced Garlic} over medium high heat (until meat is completely brown and vegetables are tender.) Season with a little salt and pepper, to taste
 2. Drain excess grease and pour beef mixture into a 4-quart or larger crock pot.
 3. Open cans of {Petite Diced Tomatoes}, **15 ounce can tomato sauce**, **15 ounce can dark red kidney beans**, **15 ounce can beef broth**, and **15 ounce can refried beans** and dump the content of those into the crock pot. Make sure you break up the refried beans a bit after putting those in the pot.
 4. Add in **1 ½ Tablespoons chili powder**, **1 teaspoon cumin** and **1 teaspoon Worcestershire sauce** and mix thoroughly. Add **salt and pepper, to taste**. Cover with lid and cook on low for about 4-6 hours (the longer, the better).
