@@ -1,6 +1,6 @@
 ---
 title: Test
-category: test
+category: Desserts
 servings: 2
 ---
 test
