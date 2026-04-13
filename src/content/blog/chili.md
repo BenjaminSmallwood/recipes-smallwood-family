@@ -25,7 +25,7 @@ ingredients:
   - name: Can Tomato Sauce
     quantity: 15
     unit: oz
-  - name: Can Dark Red Kidney beans
+  - name: Can Dark Red Kidney Beans
     quantity: 15
     unit: oz
   - name: Beef Broth
