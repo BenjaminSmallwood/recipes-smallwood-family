@@ -22,10 +22,31 @@ ingredients:
   - name: Petite Diced Tomatoes
     quantity: 15
     unit: oz
+  - name: Can Tomato Sauce
+    quantity: 15
+    unit: oz
+  - name: Can Dark Red Kidney beans
+    quantity: 15
+    unit: oz
+  - name: Beef Broth
+    quantity: 15
+    unit: oz
+  - name: Can Black Beans
+    quantity: 15
+    unit: oz
+  - name: Chili Powder
+    quantity: 1.5
+    unit: tbsp
+  - name: Cumin
+    quantity: 1
+    unit: tsp
+  - name: Worcestershire Sauce
+    quantity: 1
+    unit: tsp
 ---
-1. In a medium skillet, brown and crumble {Ground Beef} with {Chopped Celery}, {Small Onion Finely Diced}, and {Minced Garlic} over medium high heat (until meat is completely brown and vegetables are tender.) Season with a little salt and pepper, to taste
-2. Drain excess grease and pour beef mixture into a 4-quart or larger crock pot.
-3. Open cans of {Petite Diced Tomatoes}, **15 ounce can tomato sauce**, **15 ounce can dark red kidney beans**, **15 ounce can beef broth**, and **15 ounce can refried beans** and dump the content of those into the crock pot. Make sure you break up the refried beans a bit after putting those in the pot.
-4. Add in **1 ½ Tablespoons chili powder**, **1 teaspoon cumin** and **1 teaspoon Worcestershire sauce** and mix thoroughly. Add **salt and pepper, to taste**. Cover with lid and cook on low for about 4-6 hours (the longer, the better).
-5. Taste before serving and add more salt and pepper if necessary. Top each serving with your favorite toppings like: **shredded cheddar cheese, chopped onions, green onions sour cream**.
+1. In a large pot brown and crumble {Ground Beef} with {Chopped Celery}, {Small Onion Finely Diced}, and {Minced Garlic} over medium high heat (until meat is completely brown and vegetables are tender.) Season with a little salt and pepper, to taste
+2. Drain excess grease.
+3. Open cans of {Petite Diced Tomatoes}, {Can Tomato Sauce}, {Can Dark Red Kidney Beans}, {Beef Broth}, and {Can Black Beans} and dump the content of those into the pot.
+4. Add in {Chili Powder}, {Cumin} and {Worcestershire Sauce} and mix thoroughly. Add salt and pepper, to taste. Cover with lid and cook on low till integrated. Remove lid and let steam until desired thickness.
+5. Taste before serving and add more salt and pepper if necessary. Top each serving with your favorite toppings like: shredded cheddar cheese, chopped onions, green onions sour cream.
 
