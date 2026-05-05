@@ -36,11 +36,11 @@ ingredients:
     quantity: 1
     unit: Dash
 ---
-1. Spray the slow cooker with non-stick cooking spray, then place {Frozen Meatballs}**,** in the bottom of the slow cooker.
+1. Spray the slow cooker with non-stick cooking spray, then place {Frozen Meatballs}, in the bottom of the slow cooker.
 2. For the sauce, melt {Butter} in a medium skillet over medium-high heat. Add {Flour} and whisk to create a paste.
-3. Slowly stir in {Beef Broth}**** and {Heavy Cream}.
-4. Stir in {Worcestershire Sauce}, {Dijon Mustard}, {Allspice}, and {Nutmeg}. Bring to a simmer until the sauce starts to thicken, about 15 minutes. Season with **salt and pepper to taste**.
+3. Slowly stir in {Beef Broth} and {Heavy Cream}.
+4. Stir in {Worcestershire Sauce}, {Dijon Mustard}, {Allspice}, and {Nutmeg}. Bring to a simmer until the sauce starts to thicken, about 15 minutes. Season with salt and pepper to taste.
 5. Pour the sauce over the meatballs.
 6. Cover and cook the meatballs for 2 hours on high or low for 4 to 5 hours.
-7. Garnish the Swedish meatballs with parsley, and serve with **egg noodles**.
+7. Garnish the Swedish meatballs with parsley, and serve with egg **noodles**.
 
