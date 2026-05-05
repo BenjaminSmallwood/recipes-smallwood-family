@@ -42,5 +42,5 @@ ingredients:
 4. Stir in {Worcestershire Sauce}, {Dijon Mustard}, {Allspice}, and {Nutmeg}. Bring to a simmer until the sauce starts to thicken, about 15 minutes. Season with salt and pepper to taste.
 5. Pour the sauce over the meatballs.
 6. Cover and cook the meatballs for 2 hours on high or low for 4 to 5 hours.
-7. Garnish the Swedish meatballs with parsley, and serve with egg **noodles**.
+7. Garnish the Swedish meatballs with parsley, and serve with egg noodles.
 
