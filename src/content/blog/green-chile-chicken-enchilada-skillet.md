@@ -42,10 +42,8 @@ ingredients:
     quantity: 1
     unit: Cup
 ---
-Preheat oven to 425° F.
+1. Preheat oven to 425° F.
+2. Heat the {Olive Oil} in a large oven safe skillet over medium high heat. Add the {Yellow Onion} and {Chili Powder}, {Ground Cumin}, and {Garlic Powder} to the skillet and sauté for a couple minutes until the onion softens.
+3. Lower the heat to medium and add in the {Cooked Shredded Chicken}, {Black Beans}, {Fire Roasted Green Chiles}, {Cilantro}, {Green Enchilada Sauce} and season with salt and pepper. Stir everything together then add in the {Corn Tortillas} wedges. Stir to coat the tortillas in the sauce.
+4. Top with the {Monterey Jack Cheese} and place the skillet in the oven. Bake for 10-15 minutes or until it's bubbly and the cheese is melted. Remove from the oven and top with extra cilantro, avocado slices and sour cream or plain Greek yogurt if desired.
 
-Heat the {Olive Oil} in a large oven safe skillet over medium high heat. Add the {Yellow Onion} and {Chili Powder}, {Ground Cumin}, and {Garlic Powder} to the skillet and sauté for a couple minutes until the onion softens.
-
-Lower the heat to medium and add in the {Cooked Shredded Chicken}, {Black Beans}, {Fire Roasted Green Chiles}, {Cilantro}, {Green Enchilada Sauce} and season with salt and pepper. Stir everything together then add in the {Corn Tortillas} wedges. Stir to coat the tortillas in the sauce.
-
-Top with the {Monterey Jack Cheese} and place the skillet in the oven. Bake for 10-15 minutes or until it's bubbly and the cheese is melted. Remove from the oven and top with extra cilantro, avocado slices and sour cream or plain Greek yogurt if desired.
