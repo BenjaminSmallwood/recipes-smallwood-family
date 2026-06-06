@@ -9,7 +9,7 @@ ingredients:
   - name: Olive Oil
     quantity: 2
     unit: Tablespoon
-  - name: Sweet Onion
+  - name: Diced Sweet Onion
     quantity: 1
     unit: Small
   - name: Diced Celery
@@ -42,7 +42,7 @@ ingredients:
   - name: Chopped Parsley
     quantity: 2
     unit: Teaspoons
-  - name: Green Pepper
+  - name: Diced Green Pepper
     quantity: 1
 ---
 1. In an extra-large skillet (with a lid), warm {Olive Oil} over medium-high heat. Add in the {Sweet Onion}, {Cubed Chicken}, {Green Pepper}, and {Diced Celery}; sauté until chicken is cooked through and onion is softened, stirring occasionally, about 3-6 minutes. Stir in the {Minced Garlic} and cook for 30-60 seconds until fragrant. Sprinkle with a touch of salt and pepper.
