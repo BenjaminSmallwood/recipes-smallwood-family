@@ -4,22 +4,58 @@ import RecipeLayout from "../layouts/RecipeLayout.astro";
 
 const recipes = await getCollection("recipes");
 const sorted = recipes.sort((a, b) => a.data.title.localeCompare(b.data.title));
-const firstRecipe = sorted[0];
 ---
 
 <RecipeLayout title="Smallwood Family Recipes">
-  <div class="flex flex-col items-center justify-center py-16 text-center">
-    <h1 class="text-3xl font-bold mb-4">Welcome!</h1>
-    <p class="text-gray-500 dark:text-gray-400 mb-6">
-      Select a recipe from the sidebar to get started.
-    </p>
-    {firstRecipe && (
-      <a
-        href={`/recipes/${firstRecipe.id}`}
-        class="rounded-lg bg-primary px-6 py-2 text-white font-medium hover:bg-primary-light transition-colors"
-      >
-        Browse Recipes
-      </a>
-    )}
+  <div class="max-w-5xl mx-auto">
+    <header class="mb-8 text-center">
+      <h1 class="text-4xl font-bold mb-2">Welcome!</h1>
+      <p class="text-gray-500 dark:text-gray-400">
+        Pick a recipe below or browse the sidebar.
+      </p>
+    </header>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      {sorted.map((recipe) => (
+        <a
+          href={`/recipes/${recipe.id}`}
+          class="group block overflow-hidden rounded-xl border border-border bg-white shadow-sm transition-all hover:-translate-y-1 hover:shadow-md dark:border-border-dark dark:bg-gray-800"
+        >
+          {recipe.data.image ? (
+            <div class="aspect-[4/3] overflow-hidden bg-gray-100 dark:bg-gray-900">
+              <img
+                src={recipe.data.image}
+                alt={recipe.data.title}
+                class="h-full w-full object-cover transition-transform group-hover:scale-105"
+                onerror="this.style.display='none'"
+              />
+            </div>
+          ) : (
+            <div class="aspect-[4/3] bg-gradient-to-br from-primary/10 to-primary/30 flex items-center justify-center">
+              <svg class="h-12 w-12 text-primary/60" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 3h18v18H3V3zm6 6h6v6H9V9z" />
+              </svg>
+            </div>
+          )}
+          <div class="p-4">
+            <div class="text-xs font-medium uppercase tracking-wide text-primary mb-1">
+              {recipe.data.category}
+            </div>
+            <h2 class="text-lg font-semibold mb-2 group-hover:text-primary transition-colors">
+              {recipe.data.title}
+            </h2>
+            <div class="flex flex-wrap gap-3 text-xs text-gray-500 dark:text-gray-400">
+              {recipe.data.prepTime && (
+                <span>Prep: {recipe.data.prepTime}m</span>
+              )}
+              {recipe.data.cookTime && (
+                <span>Cook: {recipe.data.cookTime}m</span>
+              )}
+              <span>Serves {recipe.data.servings}</span>
+            </div>
+          </div>
+        </a>
+      ))}
+    </div>
   </div>
 </RecipeLayout>

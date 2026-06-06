@@ -165,6 +165,7 @@ function updateActiveLink() {
 
 // ── Wake Lock ──
 let wakeLock = null;
+let wakeLockDesired = false;
 
 function initWakeLock() {
   const toggle = document.getElementById("wake-lock-toggle");
@@ -184,33 +185,44 @@ function initWakeLock() {
     }
   }
 
-  // Restore state if it was previously on
-  updateUI(wakeLock !== null);
+  // Sync UI to current state (button persists across navigations)
+  updateUI(wakeLockDesired);
+
+  // Button is persisted via transition:persist — only attach the listener once
+  if (toggle.dataset.wakeLockBound) return;
+  toggle.dataset.wakeLockBound = "true";
 
   toggle.addEventListener("click", async () => {
-    if (wakeLock) {
-      await wakeLock.release();
-      wakeLock = null;
+    if (wakeLockDesired) {
+      wakeLockDesired = false;
       updateUI(false);
+      if (wakeLock) {
+        try { await wakeLock.release(); } catch (e) {}
+        wakeLock = null;
+      }
     } else {
+      wakeLockDesired = true;
+      updateUI(true);
       try {
         wakeLock = await navigator.wakeLock.request("screen");
         wakeLock.addEventListener("release", () => {
           wakeLock = null;
-          updateUI(false);
         });
-        updateUI(true);
       } catch (e) {
-        // Wake lock request failed (e.g. low battery)
+        wakeLockDesired = false;
+        updateUI(false);
       }
     }
   });
 
   // Re-acquire wake lock when page becomes visible again
   document.addEventListener("visibilitychange", async () => {
-    if (document.visibilityState === "visible" && wakeLock !== null) {
+    if (document.visibilityState === "visible" && wakeLockDesired && !wakeLock) {
       try {
         wakeLock = await navigator.wakeLock.request("screen");
+        wakeLock.addEventListener("release", () => {
+          wakeLock = null;
+        });
       } catch (e) {}
     }
   });
