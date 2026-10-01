@@ -12,11 +12,15 @@ interface Props {
   servings: number;
   ingredients: RecipeIngredient[];
   body: string;
+  description?: string | null;
   sourceName?: string | null;
   sourceUrl?: string | null;
 }
 
-const { slug, title, image, cookTime, prepTime, servings, ingredients, body, sourceName, sourceUrl } = Astro.props;
+const { slug, title, image, cookTime, prepTime, servings, ingredients, body, description, sourceName, sourceUrl } = Astro.props;
+
+// Blank lines in the description start new paragraphs
+const descriptionParagraphs = description ? description.split(/\n\s*\n/).map((p) => p.trim()).filter(Boolean) : [];
 
 const steps = parseSteps(body, ingredients, "font-semibold text-primary");
 
@@ -64,6 +68,12 @@ const shoppingData = JSON.stringify({
         class="w-full h-64 object-cover bg-gray-100 dark:bg-gray-800"
         onerror="this.style.display='none'"
       />
+    </div>
+  )}
+
+  {descriptionParagraphs.length > 0 && (
+    <div class="mb-4 space-y-3 leading-relaxed text-gray-700 dark:text-gray-300 print:hidden">
+      {descriptionParagraphs.map((paragraph) => <p class="whitespace-pre-line">{paragraph}</p>)}
     </div>
   )}
 
