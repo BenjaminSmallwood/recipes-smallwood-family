@@ -19,8 +19,8 @@ const sortedRecipes = recipes.sort((a, b) => a.data.title.localeCompare(b.data.t
   <TopBar />
   <Sidebar recipes={sortedRecipes} currentSlug={currentSlug} />
 
-  <main class="pt-[57px] md:ml-[300px]">
-    <div class="p-6 md:p-8">
+  <main class="pt-[57px] md:ml-[300px] print:m-0 print:p-0">
+    <div class="p-6 md:p-8 print:p-0">
       <slot />
     </div>
   </main>

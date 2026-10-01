@@ -29,7 +29,7 @@ const categories = Object.keys(grouped).sort();
 
 <nav
   id="sidebar"
-  class="fixed left-0 top-[57px] bottom-0 z-40 w-[300px] -translate-x-full overflow-y-auto border-r border-border bg-sidebar p-4 transition-transform md:translate-x-0 dark:border-border-dark dark:bg-sidebar-dark"
+  class="print:hidden fixed left-0 top-[57px] bottom-0 z-40 w-[300px] -translate-x-full overflow-y-auto border-r border-border bg-sidebar p-4 transition-transform md:translate-x-0 dark:border-border-dark dark:bg-sidebar-dark"
   transition:persist
 >
   <div class="mb-3 md:hidden">
@@ -75,7 +75,7 @@ const categories = Object.keys(grouped).sort();
 <!-- Overlay for mobile -->
 <div
   id="sidebar-overlay"
-  class="fixed inset-0 top-[57px] z-30 hidden bg-black/40 md:hidden"
+  class="print:hidden fixed inset-0 top-[57px] z-30 hidden bg-black/40 md:hidden"
 ></div>
 
 <script is:inline>

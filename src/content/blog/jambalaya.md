@@ -45,7 +45,7 @@ ingredients:
   - name: Diced Green Pepper
     quantity: 1
 ---
-1. In an extra-large skillet (with a lid), warm {Olive Oil} over medium-high heat. Add in the {Sweet Onion}, {Cubed Chicken}, {Green Pepper}, and {Diced Celery}; sauté until chicken is cooked through and onion is softened, stirring occasionally, about 3-6 minutes. Stir in the {Minced Garlic} and cook for 30-60 seconds until fragrant. Sprinkle with a touch of salt and pepper.
+1. In an extra-large skillet (with a lid), warm {Olive Oil} over medium-high heat. Add in the {Diced Sweet Onion}, {Cubed Chicken}, {Diced Green Pepper}, and {Diced Celery}; sauté until chicken is cooked through and onion is softened, stirring occasionally, about 3-6 minutes. Stir in the {Minced Garlic} and cook for 30-60 seconds until fragrant. Sprinkle with a touch of salt and pepper.
 2. Stir in {Chicken Broth}, {Petite Diced Tomatoes}, {Andouille Sausage}, {Uncooked Rice}, {Cajun Seasoning}, and {Cayenne Pepper}. Bring to a boil, then reduce heat to a gentle simmer. Cover and cook for 15 minutes.
 3. Sprinkle with {Chopped Parsley}, if desired, and serve.
 

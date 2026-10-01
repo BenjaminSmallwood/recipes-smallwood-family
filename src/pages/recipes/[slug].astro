@@ -24,5 +24,7 @@ const { data, body } = recipe;
     servings={data.servings}
     ingredients={data.ingredients}
     body={body}
+    sourceName={data.sourceName?.trim() || null}
+    sourceUrl={data.sourceUrl?.trim() || null}
   />
 </RecipeLayout>
