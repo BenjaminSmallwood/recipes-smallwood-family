@@ -1,3 +1,5 @@
+import { formatQuantity } from "../lib/recipe";
+
 // ── Sidebar Toggle (mobile) ──
 function initSidebarToggle() {
   const toggle = document.getElementById("sidebar-toggle");
@@ -77,38 +79,6 @@ function initScaling() {
 
   let multiplier = 1;
 
-  function formatQuantity(qty) {
-    const fractions = {
-      0.125: "⅛",
-      0.25: "¼",
-      0.333: "⅓",
-      0.5: "½",
-      0.667: "⅔",
-      0.75: "¾",
-    };
-
-    const whole = Math.floor(qty);
-    const frac = Math.round((qty - whole) * 1000) / 1000;
-
-    if (frac === 0) return whole.toString();
-
-    let closest = null;
-    let closestDiff = Infinity;
-    for (const [key, symbol] of Object.entries(fractions)) {
-      const diff = Math.abs(frac - Number(key));
-      if (diff < closestDiff && diff < 0.05) {
-        closest = symbol;
-        closestDiff = diff;
-      }
-    }
-
-    if (closest) {
-      return whole > 0 ? `${whole} ${closest}` : closest;
-    }
-
-    return Number(qty.toFixed(2)).toString();
-  }
-
   function updateScale() {
     display.textContent = `×${multiplier}`;
 
@@ -122,14 +92,11 @@ function initScaling() {
       }
     });
 
-    document.querySelectorAll(".ingredient-ref").forEach((span) => {
-      const name = span.dataset.ingredient;
-      const item = document.querySelector(`.ingredient-item[data-name="${name}"]`);
-      if (!item) return;
-      const baseQty = Number(item.dataset.baseQty);
-      const unit = item.dataset.unit || "";
-      const scaled = baseQty * multiplier;
-      span.textContent = `${formatQuantity(scaled)}${unit ? " " + unit : ""} ${name}`;
+    // Each placeholder carries its own portion of the ingredient in data-qty
+    document.querySelectorAll(".ingredient-ref[data-qty]").forEach((span) => {
+      const unit = span.dataset.unit || "";
+      const scaled = Number(span.dataset.qty) * multiplier;
+      span.textContent = `${formatQuantity(scaled)}${unit ? " " + unit : ""} ${span.dataset.ingredient}`;
     });
 
     document.querySelectorAll("[data-base-servings-display]").forEach((el) => {

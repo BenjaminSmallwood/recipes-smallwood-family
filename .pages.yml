@@ -27,4 +27,4 @@ content:
           - { name: name, label: Name, type: string, required: true }
           - { name: quantity, label: Quantity, type: number, required: true }
           - { name: unit, label: Unit, type: string }
-      - { name: body, label: Instructions, type: rich-text }
+      - { name: body, label: Instructions, type: rich-text, description: "Insert ingredients as {Name} (full amount, or whatever is left), {Name 1/3} or {Name 50%} (a share), or {Name 2 tbsp} (exact amount in the ingredient's unit)" }
