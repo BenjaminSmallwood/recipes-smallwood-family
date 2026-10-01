@@ -8,22 +8,28 @@ function initSidebarToggle() {
   const overlay = document.getElementById("sidebar-overlay");
   if (!toggle || !sidebar || !overlay) return;
 
+  // The overlay is re-rendered on each navigation, so look it up when needed
   function openSidebar() {
     sidebar.classList.remove("-translate-x-full");
-    overlay.classList.remove("hidden");
+    document.getElementById("sidebar-overlay")?.classList.remove("hidden");
   }
 
   function closeSidebar() {
     sidebar.classList.add("-translate-x-full");
-    overlay.classList.add("hidden");
+    document.getElementById("sidebar-overlay")?.classList.add("hidden");
   }
+
+  overlay.addEventListener("click", closeSidebar);
+
+  // Toggle and sidebar are persisted via transition:persist — only attach these listeners once,
+  // otherwise stacked toggle handlers cancel each other out after a navigation
+  if (toggle.dataset.sidebarBound) return;
+  toggle.dataset.sidebarBound = "true";
 
   toggle.addEventListener("click", () => {
     const isOpen = !sidebar.classList.contains("-translate-x-full");
     isOpen ? closeSidebar() : openSidebar();
   });
-
-  overlay.addEventListener("click", closeSidebar);
 
   // Close sidebar on recipe link click (mobile)
   sidebar.querySelectorAll(".recipe-link").forEach((link) => {
@@ -64,8 +70,15 @@ function initSearch() {
     filterRecipes(query);
   }
 
-  if (desktop) desktop.addEventListener("input", onInput);
-  if (mobile) mobile.addEventListener("input", onInput);
+  // Both inputs are persisted across navigations — only bind once
+  if (desktop && !desktop.dataset.searchBound) {
+    desktop.dataset.searchBound = "true";
+    desktop.addEventListener("input", onInput);
+  }
+  if (mobile && !mobile.dataset.searchBound) {
+    mobile.dataset.searchBound = "true";
+    mobile.addEventListener("input", onInput);
+  }
 }
 
 // ── Recipe Scaling ──
