@@ -30,7 +30,8 @@ ingredients:
   - item: Black Beans
     quantity: 15
     unit: oz
-  - item: Fire Roasted Green Chiles
+  - item: Diced Green Chiles
+    prep: fire roasted
     quantity: 4
     unit: oz
   - item: Cilantro
@@ -44,6 +45,6 @@ ingredients:
     unit: Cup
 ---
 1. Heat the {Olive Oil} in a large skillet over medium high heat. Add the {Yellow Onion} and {Chili Powder}, {Ground Cumin}, and {Garlic Powder} to the skillet and sauté for a couple minutes until the onion softens.
-2. Lower the heat to medium and add in the {Cooked Chicken}, {Black Beans}, {Fire Roasted Green Chiles}, {Cilantro}, {Green Enchilada Sauce} and season with salt and pepper. Stir everything together.
+2. Lower the heat to medium and add in the {Cooked Chicken}, {Black Beans}, {Diced Green Chiles}, {Cilantro}, {Green Enchilada Sauce} and season with salt and pepper. Stir everything together.
 3. Top with the {Monterey Jack Cheese} and top with extra cilantro, avocado slices and sour cream or plain Greek yogurt if desired.
 
