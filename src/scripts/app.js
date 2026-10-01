@@ -295,6 +295,48 @@ function initWakeLock() {
   });
 }
 
+// ── Theme (light / dark / system) ──
+// The initial theme is applied by an inline script in BaseLayout to avoid a flash
+function getThemePref() {
+  try { return localStorage.getItem("theme") || "system"; } catch (e) { return "system"; }
+}
+
+function initThemeToggle() {
+  const group = document.getElementById("theme-toggle");
+  if (!group) return;
+  const options = group.querySelectorAll(".theme-option");
+
+  function updateUI() {
+    const pref = getThemePref();
+    options.forEach((btn) => {
+      const selected = btn.dataset.themeOption === pref;
+      btn.setAttribute("aria-checked", String(selected));
+      btn.classList.toggle("text-primary", selected);
+      btn.classList.toggle("bg-gray-100", selected);
+      btn.classList.toggle("dark:bg-gray-800", selected);
+    });
+  }
+
+  updateUI();
+
+  // Toggle is persisted via transition:persist — only attach listeners once
+  if (group.dataset.themeBound) return;
+  group.dataset.themeBound = "true";
+
+  options.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      try { localStorage.setItem("theme", btn.dataset.themeOption); } catch (e) {}
+      window.applyTheme?.();
+      updateUI();
+    });
+  });
+
+  // Follow OS changes while set to "system"
+  matchMedia("(prefers-color-scheme: dark)").addEventListener("change", () => {
+    if (getThemePref() === "system") window.applyTheme?.();
+  });
+}
+
 // ── Initialize ──
 function init() {
   initSidebarToggle();
@@ -304,6 +346,7 @@ function init() {
   initShoppingList();
   updateActiveLink();
   initWakeLock();
+  initThemeToggle();
 }
 
 // Run on initial load and after view transitions

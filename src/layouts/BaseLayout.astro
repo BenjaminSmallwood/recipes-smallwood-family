@@ -9,7 +9,7 @@ interface Props {
 const { title = "Smallwood Family Recipes" } = Astro.props;
 ---
 
-<html lang="en" class="dark">
+<html lang="en">
   <head>
     <meta charset="utf-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
@@ -17,8 +17,25 @@ const { title = "Smallwood Family Recipes" } = Astro.props;
     <meta name="generator" content={Astro.generator} />
     <title>{title}</title>
     <ClientRouter />
+    <script is:inline>
+      // Apply the saved theme before first paint. Runs once; app.js keeps it in sync after that.
+      (function () {
+        function apply(doc) {
+          var pref = "system";
+          try { pref = localStorage.getItem("theme") || "system"; } catch (e) {}
+          var dark = pref === "dark" || (pref === "system" && matchMedia("(prefers-color-scheme: dark)").matches);
+          doc.documentElement.classList.toggle("dark", dark);
+          doc.documentElement.style.colorScheme = dark ? "dark" : "light";
+        }
+        apply(document);
+        if (window.applyTheme) return; // already set up on an earlier page
+        // The router replaces <html> attributes on navigation — set the theme on the incoming page
+        document.addEventListener("astro:before-swap", function (e) { apply(e.newDocument); });
+        window.applyTheme = function () { apply(document); };
+      })();
+    </script>
   </head>
-  <body class="bg-surface-dark text-text-dark min-h-screen print:bg-white print:text-black">
+  <body class="bg-surface text-text dark:bg-surface-dark dark:text-text-dark min-h-screen print:bg-white print:text-black">
     <slot />
     <script src="../scripts/app.js"></script>
   </body>
