@@ -2,6 +2,7 @@
 import { getCollection } from "astro:content";
 import RecipeLayout from "../../layouts/RecipeLayout.astro";
 import RecipeView from "../../components/RecipeView.astro";
+import { getRecipeIngredients } from "../../lib/ingredients";
 
 export async function getStaticPaths() {
   const recipes = await getCollection("recipes");
@@ -13,16 +14,20 @@ export async function getStaticPaths() {
 
 const { recipe } = Astro.props;
 const { data, body } = recipe;
+const ingredients = await getRecipeIngredients(recipe);
 ---
 
 <RecipeLayout title={`${data.title} | Smallwood Family Recipes`} currentSlug={recipe.id}>
   <RecipeView
+    slug={recipe.id}
     title={data.title}
     image={data.image}
     cookTime={data.cookTime}
     prepTime={data.prepTime}
     servings={data.servings}
-    ingredients={data.ingredients}
+    ingredients={ingredients}
     body={body}
+    sourceName={data.sourceName?.trim() || null}
+    sourceUrl={data.sourceUrl?.trim() || null}
   />
 </RecipeLayout>

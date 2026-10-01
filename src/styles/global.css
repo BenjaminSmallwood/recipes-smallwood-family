@@ -14,3 +14,203 @@
   --color-border: #e5e7eb;
   --color-border-dark: #2a2a2a;
 }
+
+/* ── Printable recipe card (4×6 in, landscape) ──
+   Laid out off-screen at all times so app.js can measure it and split
+   overflowing content onto a back side. Only visible when printing. */
+
+@page {
+  size: letter portrait;
+  margin: 0.5in;
+}
+
+.rc {
+  position: absolute;
+  top: 0;
+  left: -10000px;
+  color: #000;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+
+.rc [hidden] {
+  display: none !important;
+}
+
+/* One card per printed page, centered so front and back line up when printed double-sided */
+.rc-sheet {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 9.9in;
+}
+
+.rc-back-sheet {
+  break-before: page;
+}
+
+.rc-frame {
+  position: relative;
+}
+
+.rc-card {
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  width: 6in;
+  height: 4in;
+  padding: 0.22in 0.25in;
+  overflow: hidden;
+  background: #fff;
+}
+
+.rc-image {
+  display: block;
+  flex: none;
+  width: 100%;
+  height: 1.2in;
+  object-fit: cover;
+  margin-bottom: 0.1in;
+}
+
+.rc-header {
+  flex: none;
+  margin-bottom: 0.08in;
+}
+
+.rc-title {
+  margin: 0;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 15pt;
+  font-weight: 700;
+  line-height: 1.15;
+}
+
+.rc-title-cont {
+  font-size: 9pt;
+  font-weight: 400;
+  font-style: italic;
+}
+
+.rc-meta {
+  display: flex;
+  gap: 0.15in;
+  margin: 0.03in 0 0;
+  font-size: 7pt;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.rc-body {
+  display: grid;
+  flex: 1;
+  grid-template-columns: 2fr 3fr;
+  column-gap: 0.22in;
+  min-height: 0;
+  font-size: 7.75pt;
+  line-height: 1.32;
+}
+
+.rc-body.rc-steps-only {
+  grid-template-columns: 1fr;
+}
+
+.rc-body.rc-steps-only .rc-step-list {
+  column-count: 2;
+  column-gap: 0.22in;
+}
+
+.rc-ingredients,
+.rc-steps {
+  min-height: 0;
+  overflow: hidden;
+}
+
+.rc-heading {
+  margin: 0 0 0.05in;
+  padding-bottom: 0.02in;
+  border-bottom: 0.5pt solid #000;
+  font-size: 6.5pt;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.rc-ingredient-list,
+.rc-step-list {
+  margin: 0;
+  padding: 0;
+}
+
+.rc-ingredient-list {
+  list-style: none;
+}
+
+.rc-ingredient-list li {
+  padding-left: 0.12in;
+  text-indent: -0.12in;
+  margin-bottom: 0.015in;
+}
+
+.rc-ingredient-list .ingredient-qty {
+  font-weight: 700;
+}
+
+.rc-step-list {
+  list-style: decimal;
+  padding-left: 0.16in;
+}
+
+.rc-step-list li {
+  margin-bottom: 0.045in;
+  break-inside: avoid;
+}
+
+.rc-step-list li::marker {
+  font-weight: 700;
+}
+
+.rc-step-list .ingredient-ref {
+  font-weight: 600;
+}
+
+.rc-continued {
+  margin: 0.02in 0 0;
+  font-size: 6.5pt;
+  font-style: italic;
+  text-align: right;
+}
+
+.rc-credit {
+  flex: none;
+  margin-top: 0.06in;
+  font-size: 6.5pt;
+  font-style: italic;
+  overflow-wrap: anywhere;
+}
+
+/* Crop marks just outside each corner, along the card edges */
+.rc-crop {
+  position: absolute;
+  background: #000;
+}
+
+.rc-crop-tl-h, .rc-crop-tr-h, .rc-crop-bl-h, .rc-crop-br-h { width: 0.25in; height: 0.5pt; }
+.rc-crop-tl-v, .rc-crop-tr-v, .rc-crop-bl-v, .rc-crop-br-v { width: 0.5pt; height: 0.25in; }
+
+.rc-crop-tl-h, .rc-crop-bl-h { left: -0.35in; }
+.rc-crop-tr-h, .rc-crop-br-h { right: -0.35in; }
+.rc-crop-tl-h, .rc-crop-tr-h { top: 0; }
+.rc-crop-bl-h, .rc-crop-br-h { bottom: 0; }
+
+.rc-crop-tl-v, .rc-crop-tr-v { top: -0.35in; }
+.rc-crop-bl-v, .rc-crop-br-v { bottom: -0.35in; }
+.rc-crop-tl-v, .rc-crop-bl-v { left: 0; }
+.rc-crop-tr-v, .rc-crop-br-v { right: 0; }
+
+@media print {
+  .rc {
+    position: static;
+  }
+}

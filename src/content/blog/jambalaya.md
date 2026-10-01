@@ -6,46 +6,53 @@ cookTime: "20"
 prepTime: "15"
 servings: 6
 ingredients:
-  - name: Olive Oil
+  - item: Olive Oil
     quantity: 2
     unit: Tablespoon
-  - name: Diced Sweet Onion
+  - item: Sweet Onion
+    prep: diced
     quantity: 1
     unit: Small
-  - name: Diced Celery
+  - item: Celery
+    prep: diced
     quantity: 0.33
     unit: Cup
-  - name: Minced Garlic
+  - item: Garlic
+    prep: minced
     quantity: 2
     unit: Cloves
-  - name: Chicken Broth
+  - item: Chicken Broth
     quantity: 2
     unit: Cups
-  - name: Petite Diced Tomatoes
+  - item: Petite Diced Tomatoes
     quantity: 28
     unit: oz
-  - name: Andouille Sausage
+  - item: Andouille Sausage
     quantity: 8
     unit: oz
-  - name: Uncooked Rice
+  - item: Rice
+    prep: uncooked
     quantity: 1
     unit: Cup
-  - name: Cajun Seasoning
+  - item: Cajun Seasoning
     quantity: 1
     unit: Teaspoon
-  - name: Cayenne Pepper
+  - item: Cayenne Pepper
     quantity: 1
     unit: Pinch
-  - name: Cubed Chicken
+  - item: Chicken
+    prep: cubed
     quantity: 1
     unit: lb
-  - name: Chopped Parsley
+  - item: Parsley
+    prep: chopped
     quantity: 2
     unit: Teaspoons
-  - name: Diced Green Pepper
+  - item: Green Bell Pepper
+    prep: diced
     quantity: 1
 ---
-1. In an extra-large skillet (with a lid), warm {Olive Oil} over medium-high heat. Add in the {Sweet Onion}, {Cubed Chicken}, {Green Pepper}, and {Diced Celery}; sauté until chicken is cooked through and onion is softened, stirring occasionally, about 3-6 minutes. Stir in the {Minced Garlic} and cook for 30-60 seconds until fragrant. Sprinkle with a touch of salt and pepper.
-2. Stir in {Chicken Broth}, {Petite Diced Tomatoes}, {Andouille Sausage}, {Uncooked Rice}, {Cajun Seasoning}, and {Cayenne Pepper}. Bring to a boil, then reduce heat to a gentle simmer. Cover and cook for 15 minutes.
-3. Sprinkle with {Chopped Parsley}, if desired, and serve.
+1. In an extra-large skillet (with a lid), warm {Olive Oil} over medium-high heat. Add in the {Sweet Onion}, {Chicken}, {Green Bell Pepper}, and {Celery}; sauté until chicken is cooked through and onion is softened, stirring occasionally, about 3-6 minutes. Stir in the {Garlic} and cook for 30-60 seconds until fragrant. Sprinkle with a touch of salt and pepper.
+2. Stir in {Chicken Broth}, {Petite Diced Tomatoes}, {Andouille Sausage}, {Rice}, {Cajun Seasoning}, and {Cayenne Pepper}. Bring to a boil, then reduce heat to a gentle simmer. Cover and cook for 15 minutes.
+3. Sprinkle with {Parsley}, if desired, and serve.
 

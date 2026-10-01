@@ -1,3 +1,6 @@
+import { formatQuantity } from "../lib/recipe";
+import { initShoppingList, updateShoppingButton } from "./shopping-list.js";
+
 // ── Sidebar Toggle (mobile) ──
 function initSidebarToggle() {
   const toggle = document.getElementById("sidebar-toggle");
@@ -77,40 +80,9 @@ function initScaling() {
 
   let multiplier = 1;
 
-  function formatQuantity(qty) {
-    const fractions = {
-      0.125: "⅛",
-      0.25: "¼",
-      0.333: "⅓",
-      0.5: "½",
-      0.667: "⅔",
-      0.75: "¾",
-    };
-
-    const whole = Math.floor(qty);
-    const frac = Math.round((qty - whole) * 1000) / 1000;
-
-    if (frac === 0) return whole.toString();
-
-    let closest = null;
-    let closestDiff = Infinity;
-    for (const [key, symbol] of Object.entries(fractions)) {
-      const diff = Math.abs(frac - Number(key));
-      if (diff < closestDiff && diff < 0.05) {
-        closest = symbol;
-        closestDiff = diff;
-      }
-    }
-
-    if (closest) {
-      return whole > 0 ? `${whole} ${closest}` : closest;
-    }
-
-    return Number(qty.toFixed(2)).toString();
-  }
-
   function updateScale() {
     display.textContent = `×${multiplier}`;
+    view.dataset.multiplier = multiplier;
 
     document.querySelectorAll(".ingredient-item").forEach((item) => {
       const baseQty = Number(item.dataset.baseQty);
@@ -122,15 +94,20 @@ function initScaling() {
       }
     });
 
-    document.querySelectorAll(".ingredient-ref").forEach((span) => {
-      const name = span.dataset.ingredient;
-      const item = document.querySelector(`.ingredient-item[data-name="${name}"]`);
-      if (!item) return;
-      const baseQty = Number(item.dataset.baseQty);
-      const unit = item.dataset.unit || "";
-      const scaled = baseQty * multiplier;
-      span.textContent = `${formatQuantity(scaled)}${unit ? " " + unit : ""} ${name}`;
+    // Each placeholder carries its own portion of the ingredient in data-qty
+    document.querySelectorAll(".ingredient-ref[data-qty]").forEach((span) => {
+      const unit = span.dataset.unit || "";
+      const scaled = Number(span.dataset.qty) * multiplier;
+      span.textContent = `${formatQuantity(scaled)}${unit ? " " + unit : ""} ${span.dataset.ingredient}`;
     });
+
+    document.querySelectorAll("[data-base-servings-display]").forEach((el) => {
+      el.textContent = Number(el.dataset.baseServingsDisplay) * multiplier;
+    });
+
+    // Scaled amounts change line lengths, so re-fit the print card
+    paginatePrintCard();
+    updateShoppingButton();
   }
 
   if (decrease) {
@@ -149,6 +126,83 @@ function initScaling() {
     });
   }
 }
+
+// ── Print Recipe Card ──
+// Fits the card's front side; whatever doesn't fit moves to a back side.
+function paginatePrintCard() {
+  const card = document.getElementById("print-card");
+  if (!card) return;
+
+  const front = card.querySelector(".rc-front");
+  const backSheet = card.querySelector(".rc-back-sheet");
+  const back = backSheet.querySelector(".rc-back");
+  const frontIngredients = front.querySelector(".rc-ingredient-list");
+  const frontSteps = front.querySelector(".rc-step-list");
+  const backIngredientsSection = back.querySelector(".rc-ingredients");
+  const backIngredients = back.querySelector(".rc-ingredient-list");
+  const backSteps = back.querySelector(".rc-step-list");
+  const backBody = back.querySelector(".rc-body");
+  const continued = front.querySelector(".rc-continued");
+  const credit = card.querySelector(".rc-credit");
+
+  // Reset: everything back on the front
+  frontIngredients.append(...backIngredients.children);
+  frontSteps.append(...backSteps.children);
+  if (credit) front.append(credit);
+  continued.hidden = true;
+  backSheet.hidden = true;
+  backIngredientsSection.hidden = true;
+  backBody.classList.remove("rc-steps-only");
+
+  const overflows = (el) => el.scrollHeight > el.clientHeight + 1;
+  const ingredientsCol = front.querySelector(".rc-ingredients");
+  const stepsCol = front.querySelector(".rc-steps");
+
+  // Keep the ingredient list whole: shrink the photo (to a point) before splitting it
+  const image = front.querySelector(".rc-image");
+  if (image) {
+    let height = 1.2;
+    image.style.height = `${height}in`;
+    while (overflows(ingredientsCol) && height > 0.65) {
+      height -= 0.05;
+      image.style.height = `${height}in`;
+    }
+  }
+
+  if (!overflows(ingredientsCol) && !overflows(stepsCol)) return;
+
+  backSheet.hidden = false;
+  continued.hidden = false;
+  if (credit) back.append(credit);
+
+  while (overflows(stepsCol) && frontSteps.children.length) {
+    backSteps.prepend(frontSteps.lastElementChild);
+  }
+  while (overflows(ingredientsCol) && frontIngredients.children.length > 1) {
+    backIngredients.prepend(frontIngredients.lastElementChild);
+  }
+
+  if (backIngredients.children.length) {
+    backIngredientsSection.hidden = false;
+  } else {
+    backBody.classList.add("rc-steps-only");
+  }
+}
+
+function initPrintCard() {
+  const button = document.getElementById("print-card-button");
+  if (!button) return;
+
+  paginatePrintCard();
+  // Re-fit once the image has its final size (it's fixed-height, but be safe)
+  document.querySelector("#print-card .rc-image")?.addEventListener("load", paginatePrintCard);
+  button.addEventListener("click", () => {
+    paginatePrintCard();
+    window.print();
+  });
+}
+
+window.addEventListener("beforeprint", paginatePrintCard);
 
 // ── Active Sidebar Link ──
 function updateActiveLink() {
@@ -233,6 +287,8 @@ function init() {
   initSidebarToggle();
   initSearch();
   initScaling();
+  initPrintCard();
+  initShoppingList();
   updateActiveLink();
   initWakeLock();
 }

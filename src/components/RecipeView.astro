@@ -1,85 +1,63 @@
 ---
-interface Ingredient {
-  name: string;
-  quantity: number;
-  unit: string;
-}
+import RecipeCard from "./RecipeCard.astro";
+import { formatQuantity, parseSteps } from "../lib/recipe";
+import type { RecipeIngredient } from "../lib/ingredients";
 
 interface Props {
+  slug: string;
   title: string;
   image?: string;
   cookTime?: string;
   prepTime?: string;
   servings: number;
-  ingredients: Ingredient[];
+  ingredients: RecipeIngredient[];
   body: string;
+  sourceName?: string | null;
+  sourceUrl?: string | null;
 }
 
-const { title, image, cookTime, prepTime, servings, ingredients, body } = Astro.props;
+const { slug, title, image, cookTime, prepTime, servings, ingredients, body, sourceName, sourceUrl } = Astro.props;
 
-function formatQuantity(qty: number): string {
-  const fractions: Record<string, string> = {
-    "0.125": "⅛",
-    "0.25": "¼",
-    "0.33": "⅓",
-    "0.333": "⅓",
-    "0.5": "½",
-    "0.67": "⅔",
-    "0.667": "⅔",
-    "0.75": "¾",
-  };
+const steps = parseSteps(body, ingredients, "font-semibold text-primary");
 
-  const whole = Math.floor(qty);
-  const frac = Math.round((qty - whole) * 1000) / 1000;
-
-  if (frac === 0) return whole.toString();
-
-  const fracStr = fractions[frac.toString()];
-  if (fracStr) {
-    return whole > 0 ? `${whole} ${fracStr}` : fracStr;
-  }
-
-  return Number(qty.toFixed(2)).toString();
-}
-
-// Process body to replace {ingredient} with spans
-function processInstructions(bodyText: string, ings: Ingredient[]): string {
-  let processed = bodyText;
-  for (const ing of ings) {
-    const regex = new RegExp(`\\{${ing.name.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}\\}`, "g");
-    const display = `${formatQuantity(ing.quantity)}${ing.unit ? " " + ing.unit : ""} ${ing.name}`;
-    processed = processed.replace(
-      regex,
-      `<span class="ingredient-ref font-semibold text-primary" data-ingredient="${ing.name}">${display}</span>`
-    );
-  }
-  return processed;
-}
-
-const processedBody = processInstructions(body, ingredients);
-
-// Convert markdown-ish numbered list to HTML
-function bodyToHtml(text: string): string {
-  const lines = text.trim().split("\n");
-  let html = "<ol class='space-y-3 list-decimal list-inside'>";
-  for (const line of lines) {
-    const match = line.match(/^\d+\.\s+(.*)/);
-    if (match) {
-      html += `<li class="leading-relaxed">${match[1]}</li>`;
-    }
-  }
-  html += "</ol>";
-  return html;
-}
-
-const instructionsHtml = bodyToHtml(processedBody);
+// What the shopping list needs from this recipe (read by shopping-list.js)
+const shoppingData = JSON.stringify({
+  slug,
+  title,
+  ingredients: ingredients.map(({ name, quantity, unit, aisle, onHand }) => ({ name, quantity, unit, aisle, onHand })),
+}).replace(/</g, "\\u003c");
 ---
 
 <article id="recipe-view" class="max-w-3xl mx-auto" data-base-servings={servings}>
-  <h1 class="text-3xl font-bold mb-4">{title}</h1>
+  <div class="mb-4 flex items-start justify-between gap-4 print:hidden">
+    <h1 class="text-3xl font-bold">{title}</h1>
+    <div class="flex shrink-0 flex-wrap justify-end gap-2">
+    <button
+      id="shopping-add-button"
+      class="flex items-center gap-1.5 rounded-lg border border-border bg-primary px-3 py-1.5 text-sm font-medium text-black hover:bg-primary-light dark:border-border-dark"
+    >
+      <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+      </svg>
+      <span id="shopping-add-label">Add to list</span>
+    </button>
+    <button
+      id="print-card-button"
+      class="flex items-center gap-1.5 rounded-lg border border-border px-3 py-1.5 text-sm font-medium hover:bg-gray-100 dark:border-border-dark dark:hover:bg-gray-800"
+      aria-label="Print recipe card"
+    >
+      <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
+      </svg>
+      Print
+    </button>
+    </div>
+  </div>
+
+  <script id="recipe-shopping-data" type="application/json" is:inline set:html={shoppingData} />
 
   {image && (
-    <div class="mb-6 overflow-hidden rounded-xl">
+    <div class="mb-6 overflow-hidden rounded-xl print:hidden">
       <img
         src={image}
         alt={title}
@@ -89,7 +67,18 @@ const instructionsHtml = bodyToHtml(processedBody);
     </div>
   )}
 
-  <div class="flex flex-wrap gap-4 mb-6 text-sm">
+  {sourceName && (
+    <p class="mb-4 text-sm text-gray-500 dark:text-gray-400 print:hidden">
+      Recipe originally from{" "}
+      {sourceUrl ? (
+        <a href={sourceUrl} target="_blank" rel="noopener noreferrer" class="font-medium text-primary hover:underline">{sourceName}</a>
+      ) : (
+        <span class="font-medium">{sourceName}</span>
+      )}
+    </p>
+  )}
+
+  <div class="flex flex-wrap gap-4 mb-6 text-sm print:hidden">
     {prepTime && (
       <div class="flex items-center gap-1.5 rounded-lg bg-gray-100 px-3 py-1.5 dark:bg-gray-800">
         <svg class="h-4 w-4 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -109,7 +98,7 @@ const instructionsHtml = bodyToHtml(processedBody);
   </div>
 
   <!-- Multiplier -->
-  <div class="mb-6 flex items-center gap-3 rounded-lg border border-border bg-gray-50 px-4 py-3 dark:border-border-dark dark:bg-gray-800/50">
+  <div class="mb-6 flex items-center gap-3 print:hidden rounded-lg border border-border bg-gray-50 px-4 py-3 dark:border-border-dark dark:bg-gray-800/50">
     <span class="text-sm font-medium">Multiply:</span>
     <div class="flex items-center gap-1">
       <button
@@ -128,7 +117,7 @@ const instructionsHtml = bodyToHtml(processedBody);
   </div>
 
   <!-- Ingredients -->
-  <div class="mb-8">
+  <div class="mb-8 print:hidden">
     <h2 class="text-xl font-bold mb-3">Ingredients</h2>
     <ul class="space-y-2">
       {ingredients.map((ing) => (
@@ -141,15 +130,29 @@ const instructionsHtml = bodyToHtml(processedBody);
           <span class="ingredient-qty font-semibold text-primary min-w-[4rem]">
             {formatQuantity(ing.quantity)}{ing.unit ? ` ${ing.unit}` : ""}
           </span>
-          <span>{ing.name}</span>
+          <span>{ing.name}{ing.prep && <span class="text-gray-500 dark:text-gray-400">, {ing.prep}</span>}</span>
         </li>
       ))}
     </ul>
   </div>
 
   <!-- Instructions -->
-  <div class="mb-8">
+  <div class="mb-8 print:hidden">
     <h2 class="text-xl font-bold mb-3">Instructions</h2>
-    <div class="instructions-body" set:html={instructionsHtml} />
+    <ol class="instructions-body space-y-3 list-decimal list-inside">
+      {steps.map((step) => <li class="leading-relaxed" set:html={step} />)}
+    </ol>
   </div>
+
+  <RecipeCard
+    title={title}
+    image={image}
+    cookTime={cookTime}
+    prepTime={prepTime}
+    servings={servings}
+    ingredients={ingredients}
+    body={body}
+    sourceName={sourceName}
+    sourceUrl={sourceUrl}
+  />
 </article>

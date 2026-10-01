@@ -17,12 +17,41 @@ content:
       - { name: prepTime, label: Prep Time, type: string }
       - { name: servings, label: Servings, type: number, required: true }
       - { name: tags, label: Tags, type: string, list: true }
+      - { name: sourceName, label: Recipe Originally From, type: string, description: "Family member or website the recipe came from" }
+      - { name: sourceUrl, label: Original Recipe URL, type: string, description: "Optional link to the original recipe" }
       - name: ingredients
         label: Ingredients
         type: object
         list: true
         fields:
-          - { name: name, label: Name, type: string, required: true }
+          - name: item
+            label: Ingredient
+            type: reference
+            required: true
+            description: "Not in the list? Add it under Ingredients in the left sidebar first, then pick it here."
+            options:
+              collection: ingredients
+              search: title
+              value: "{fields.title}"
+              label: "{fields.title}"
+          - { name: prep, label: Prep, type: string, description: "Optional, e.g. finely diced, shredded, cubed" }
           - { name: quantity, label: Quantity, type: number, required: true }
           - { name: unit, label: Unit, type: string }
-      - { name: body, label: Instructions, type: rich-text }
+      - { name: body, label: Instructions, type: rich-text, description: "Insert ingredients as {Name} (full amount, or whatever is left), {Name 1/3} or {Name 50%} (a share), or {Name 2 tbsp} (exact amount in the ingredient's unit)" }
+  - name: ingredients
+    label: Ingredients
+    type: collection
+    path: src/content/ingredients
+    filename: "{slug}.md"
+    view:
+      fields: [title, aisle, onHand]
+    fields:
+      - { name: title, label: Name, type: string, required: true }
+      - name: aisle
+        label: Aisle
+        type: select
+        required: true
+        default: Other
+        options:
+          values: [Produce, Meat & Seafood, Dairy & Eggs, Bakery, Canned & Jarred, Pasta & Grains, Baking, Spices & Seasonings, Oils & Condiments, Frozen, Other]
+      - { name: onHand, label: Always on hand, type: boolean, description: "Check for staples like salt, pepper and oil. They'll never be added to a shopping list." }

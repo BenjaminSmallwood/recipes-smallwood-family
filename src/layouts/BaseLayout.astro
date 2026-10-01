@@ -18,7 +18,7 @@ const { title = "Smallwood Family Recipes" } = Astro.props;
     <title>{title}</title>
     <ClientRouter />
   </head>
-  <body class="bg-surface-dark text-text-dark min-h-screen">
+  <body class="bg-surface-dark text-text-dark min-h-screen print:bg-white print:text-black">
     <slot />
     <script src="../scripts/app.js"></script>
   </body>

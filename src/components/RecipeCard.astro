@@ -1,0 +1,91 @@
+---
+import { formatAmount, formatTime, parseSteps } from "../lib/recipe";
+import type { RecipeIngredient } from "../lib/ingredients";
+
+interface Props {
+  title: string;
+  image?: string;
+  cookTime?: string;
+  prepTime?: string;
+  servings: number;
+  ingredients: RecipeIngredient[];
+  body: string;
+  sourceName?: string | null;
+  sourceUrl?: string | null;
+}
+
+const { title, image, cookTime, prepTime, servings, ingredients, body, sourceName, sourceUrl } = Astro.props;
+
+const steps = parseSteps(body, ingredients);
+const credit = sourceName ? `Credit ${sourceName}${sourceUrl ? ` - ${sourceUrl}` : ""}` : "";
+const cropMarks = ["tl-h", "tl-v", "tr-h", "tr-v", "bl-h", "bl-v", "br-h", "br-v"];
+---
+
+<!--
+  4×6 in printable recipe card. Hidden off-screen on the web page and shown only
+  when printing. app.js moves steps that don't fit onto the back side.
+-->
+<div id="print-card" class="rc" aria-hidden="true">
+  <div class="rc-sheet">
+    <div class="rc-frame">
+      {cropMarks.map((m) => <span class={`rc-crop rc-crop-${m}`} />)}
+      <article class="rc-card rc-front">
+        {image && <img class="rc-image" src={image} alt="" onerror="this.remove()" />}
+        <header class="rc-header">
+          <h1 class="rc-title">{title}</h1>
+          <p class="rc-meta">
+            {prepTime && <span>Prep {formatTime(prepTime)}</span>}
+            {cookTime && <span>Cook {formatTime(cookTime)}</span>}
+            <span>Serves <span data-base-servings-display={servings}>{servings}</span></span>
+          </p>
+        </header>
+        <div class="rc-body">
+          <section class="rc-ingredients">
+            <h2 class="rc-heading">Ingredients</h2>
+            <ul class="rc-ingredient-list">
+              {ingredients.map((ing) => (
+                <li
+                  class="ingredient-item"
+                  data-base-qty={ing.quantity}
+                  data-unit={ing.unit}
+                  data-name={ing.name}
+                >
+                  <span class="ingredient-qty">{formatAmount(ing)}</span> {ing.name}{ing.prep && `, ${ing.prep}`}
+                </li>
+              ))}
+            </ul>
+          </section>
+          <section class="rc-steps">
+            <h2 class="rc-heading">Directions</h2>
+            <ol class="rc-step-list">
+              {steps.map((step, i) => <li value={i + 1} set:html={step} />)}
+            </ol>
+            <p class="rc-continued" hidden>Continued on back</p>
+          </section>
+        </div>
+        {credit && <footer class="rc-credit">{credit}</footer>}
+      </article>
+    </div>
+  </div>
+
+  <div class="rc-sheet rc-back-sheet" hidden>
+    <div class="rc-frame">
+      {cropMarks.map((m) => <span class={`rc-crop rc-crop-${m}`} />)}
+      <article class="rc-card rc-back">
+        <header class="rc-header">
+          <h1 class="rc-title">{title} <span class="rc-title-cont">continued</span></h1>
+        </header>
+        <div class="rc-body">
+          <section class="rc-ingredients" hidden>
+            <h2 class="rc-heading">Ingredients</h2>
+            <ul class="rc-ingredient-list"></ul>
+          </section>
+          <section class="rc-steps">
+            <h2 class="rc-heading">Directions</h2>
+            <ol class="rc-step-list"></ol>
+          </section>
+        </div>
+      </article>
+    </div>
+  </div>
+</div>

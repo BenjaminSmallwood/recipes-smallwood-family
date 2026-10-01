@@ -8,41 +8,43 @@ servings: 4
 tags:
   - Cozy
 ingredients:
-  - name: Olive Oil
+  - item: Olive Oil
     quantity: 2
     unit: Teaspoon
-  - name: Yellow Onion
+  - item: Yellow Onion
     quantity: 0.5
     unit: Cup
-  - name: Chili Powder
+  - item: Chili Powder
     quantity: 1.25
     unit: Teaspoon
-  - name: Ground Cumin
+  - item: Ground Cumin
     quantity: 1
     unit: Teaspoon
-  - name: Garlic Powder
+  - item: Garlic Powder
     quantity: 0.25
     unit: Teaspoon
-  - name: Cooked Shredded Chicken
+  - item: Cooked Chicken
+    prep: shredded
     quantity: 2
     unit: Cup
-  - name: Black Beans
+  - item: Black Beans
     quantity: 15
     unit: oz
-  - name: Fire Roasted Green Chiles
+  - item: Diced Green Chiles
+    prep: fire roasted
     quantity: 4
     unit: oz
-  - name: Cilantro
+  - item: Cilantro
     quantity: 2
     unit: Tablespoon
-  - name: Green Enchilada Sauce
+  - item: Green Enchilada Sauce
     quantity: 15
     unit: oz
-  - name: Monterey Jack Cheese
+  - item: Monterey Jack Cheese
     quantity: 1
     unit: Cup
 ---
 1. Heat the {Olive Oil} in a large skillet over medium high heat. Add the {Yellow Onion} and {Chili Powder}, {Ground Cumin}, and {Garlic Powder} to the skillet and sauté for a couple minutes until the onion softens.
-2. Lower the heat to medium and add in the {Cooked Shredded Chicken}, {Black Beans}, {Fire Roasted Green Chiles}, {Cilantro}, {Green Enchilada Sauce} and season with salt and pepper. Stir everything together.
+2. Lower the heat to medium and add in the {Cooked Chicken}, {Black Beans}, {Diced Green Chiles}, {Cilantro}, {Green Enchilada Sauce} and season with salt and pepper. Stir everything together.
 3. Top with the {Monterey Jack Cheese} and top with extra cilantro, avocado slices and sour cream or plain Greek yogurt if desired.
 
