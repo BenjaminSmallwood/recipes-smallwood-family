@@ -28,8 +28,15 @@ function save(state) {
   } catch (e) {}
 }
 
+// Desktop shows the list beside the content; smaller screens slide it over the page
+const desktopQuery = window.matchMedia("(min-width: 1024px)");
+
+// On mobile the slide-over covers the recipe, so it isn't remembered between visits
+let mobileOpen = false;
+
 // An empty list starts collapsed to the pill unless it was opened on purpose
 function isCollapsed(isEmpty) {
+  if (!desktopQuery.matches) return !mobileOpen;
   try {
     const saved = localStorage.getItem(COLLAPSED_KEY);
     return saved === null ? isEmpty : saved === "true";
@@ -39,6 +46,8 @@ function isCollapsed(isEmpty) {
 }
 
 function setCollapsed(collapsed) {
+  mobileOpen = !collapsed;
+  if (!desktopQuery.matches) return renderShoppingList();
   try {
     localStorage.setItem(COLLAPSED_KEY, String(collapsed));
   } catch (e) {}
@@ -108,9 +117,20 @@ export function renderShoppingList() {
   const hasList = recipes.length > 0 || state.custom.length > 0;
   const collapsed = isCollapsed(!hasList);
   root.hidden = false;
-  document.getElementById("shopping-panel").hidden = collapsed;
+  const panel = document.getElementById("shopping-panel");
+  panel.classList.toggle("translate-x-full", collapsed);
+  panel.classList.toggle("invisible", collapsed);
+  panel.inert = collapsed;
+  document.getElementById("shopping-overlay").classList.toggle("hidden", collapsed);
   document.getElementById("shopping-open").hidden = !collapsed;
-  document.documentElement.classList.toggle("shopping-open", hasList && !collapsed);
+  document.documentElement.classList.toggle("shopping-open", !collapsed);
+  // Turn on the slide animation only after the first render, so a page load doesn't animate it in
+  if (!panel.dataset.animated) {
+    panel.dataset.animated = "true";
+    requestAnimationFrame(() => requestAnimationFrame(() => {
+      panel.classList.add("transition-[translate,visibility]", "duration-200", "lg:transition-none");
+    }));
+  }
   const count = document.getElementById("shopping-count");
   count.textContent = toBuy.length;
   count.hidden = !hasList;
@@ -120,7 +140,7 @@ export function renderShoppingList() {
   recipeChips.innerHTML = recipes
     .map(
       (r) => `
-      <li class="flex items-center gap-1 rounded-full border border-border bg-white py-0.5 pl-3 pr-1 text-xs dark:border-border-dark dark:bg-gray-800">
+      <li class="flex items-center gap-1 rounded-full border border-border py-0.5 pl-3 pr-1 text-xs dark:border-border-dark">
         <a href="/recipes/${encodeURIComponent(r.slug)}" class="font-medium hover:text-primary">${escapeHtml(r.title)}</a>
         ${r.multiplier !== 1 ? `<span class="text-primary">×${r.multiplier}</span>` : ""}
         <button data-remove="${escapeHtml(r.slug)}" class="rounded-full p-0.5 text-gray-500 hover:bg-gray-200 hover:text-current dark:hover:bg-gray-700" aria-label="Remove ${escapeHtml(r.title)}">
@@ -217,6 +237,8 @@ function initPanelEvents() {
       renderShoppingList();
     } else if (e.target.closest("#shopping-collapse")) {
       setCollapsed(true);
+    } else if (e.target.closest("#shopping-overlay")) {
+      setCollapsed(true);
     } else if (e.target.closest("#shopping-open")) {
       setCollapsed(false);
     } else if (e.target.closest("#shopping-clear")) {
@@ -264,6 +286,20 @@ export function initShoppingList() {
   initAddButton();
   renderShoppingList();
 }
+
+// The router replaces <html> attributes on navigation; carry the desktop layout class over
+// so the content doesn't jump. The mobile slide-over closes on navigation, like the menu.
+document.addEventListener("astro:before-swap", (e) => {
+  mobileOpen = false;
+  if (desktopQuery.matches) {
+    e.newDocument.documentElement.classList.toggle(
+      "shopping-open",
+      document.documentElement.classList.contains("shopping-open"),
+    );
+  }
+});
+
+desktopQuery.addEventListener("change", renderShoppingList);
 
 // Keep other open tabs in sync
 window.addEventListener("storage", (e) => {

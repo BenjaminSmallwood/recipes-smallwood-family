@@ -90,7 +90,7 @@ const shoppingData = JSON.stringify({
 
   <div class="flex flex-wrap gap-4 mb-6 text-sm print:hidden">
     {prepTime && (
-      <div class="flex items-center gap-1.5 rounded-lg bg-gray-100 px-3 py-1.5 dark:bg-gray-800">
+      <div class="flex items-center gap-1.5 rounded-lg border border-border px-3 py-1.5 dark:border-border-dark">
         <svg class="h-4 w-4 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
         </svg>
@@ -98,7 +98,7 @@ const shoppingData = JSON.stringify({
       </div>
     )}
     {cookTime && (
-      <div class="flex items-center gap-1.5 rounded-lg bg-gray-100 px-3 py-1.5 dark:bg-gray-800">
+      <div class="flex items-center gap-1.5 rounded-lg border border-border px-3 py-1.5 dark:border-border-dark">
         <svg class="h-4 w-4 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 18.657A8 8 0 016.343 7.343S7 9 9 10c0-2 .5-5 2.986-7C14 5 16.09 5.777 17.656 7.343A7.975 7.975 0 0120 13a7.975 7.975 0 01-2.343 5.657z" />
         </svg>
@@ -108,18 +108,18 @@ const shoppingData = JSON.stringify({
   </div>
 
   <!-- Multiplier -->
-  <div class="mb-6 flex items-center gap-3 print:hidden rounded-lg border border-border bg-gray-50 px-4 py-3 dark:border-border-dark dark:bg-gray-800/50">
+  <div class="mb-6 flex items-center gap-3 print:hidden rounded-lg border border-border px-4 py-3 dark:border-border-dark">
     <span class="text-sm font-medium">Multiply:</span>
     <div class="flex items-center gap-1">
       <button
         id="multiplier-decrease"
-        class="rounded-md bg-gray-200 px-2 py-0.5 text-lg font-bold hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600"
+        class="rounded-md border border-border px-2 py-0.5 text-lg font-bold hover:bg-gray-100 dark:border-border-dark dark:hover:bg-gray-800"
         aria-label="Decrease multiplier"
       >−</button>
       <span id="multiplier-display" class="w-16 text-center text-sm font-semibold text-primary">×1</span>
       <button
         id="multiplier-increase"
-        class="rounded-md bg-gray-200 px-2 py-0.5 text-lg font-bold hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600"
+        class="rounded-md border border-border px-2 py-0.5 text-lg font-bold hover:bg-gray-100 dark:border-border-dark dark:hover:bg-gray-800"
         aria-label="Increase multiplier"
       >+</button>
     </div>

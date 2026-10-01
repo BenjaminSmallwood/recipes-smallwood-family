@@ -7,12 +7,19 @@
   --color-primary-light: #f0cb4a;
   --color-surface: #ffffff;
   --color-surface-dark: #1a1a1a;
-  --color-sidebar: #f8f5f0;
-  --color-sidebar-dark: #141414;
+  --color-sidebar: #ffffff;
+  --color-sidebar-dark: #1a1a1a;
   --color-text: #1f2937;
   --color-text-dark: #e0e0e0;
   --color-border: #e5e7eb;
   --color-border-dark: #2a2a2a;
+}
+
+/* Square corners everywhere (overrides all rounded-* utilities) */
+*,
+*::before,
+*::after {
+  border-radius: 0 !important;
 }
 
 /* ── Printable recipe card (4×6 in, landscape) ──

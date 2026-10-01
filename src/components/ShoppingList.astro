@@ -16,9 +16,13 @@ import { AISLES } from "../lib/shopping";
     <span id="shopping-count" class="rounded-full bg-black/15 px-2 text-xs">0</span>
   </button>
 
+  <!-- Mobile only: dims the page behind the slide-over; tapping it closes the list -->
+  <div id="shopping-overlay" class="fixed inset-0 top-[57px] z-30 hidden bg-black/40 lg:hidden"></div>
+
+  <!-- Starts off-screen; scripts/shopping-list.js slides it in. On desktop it sits beside the content instead -->
   <aside
     id="shopping-panel"
-    class="fixed right-0 top-[57px] bottom-0 z-40 flex w-full max-w-[340px] flex-col border-l border-border bg-sidebar shadow-xl lg:w-[320px] lg:shadow-none dark:border-border-dark dark:bg-sidebar-dark"
+    class="invisible fixed right-0 top-[57px] bottom-0 z-40 flex w-full max-w-[340px] translate-x-full flex-col border-l border-border bg-sidebar shadow-xl lg:w-[320px] lg:shadow-none dark:border-border-dark dark:bg-sidebar-dark"
     aria-label="Shopping list"
   >
     <header class="flex items-center justify-between border-b border-border px-4 py-3 dark:border-border-dark">
@@ -47,19 +51,19 @@ import { AISLES } from "../lib/shopping";
     </header>
 
     <div class="flex-1 overflow-y-auto px-3 py-3">
-      <form id="shopping-custom-form" class="mb-4 space-y-2 rounded-lg border border-border bg-white p-2.5 dark:border-border-dark dark:bg-gray-800/60" hidden>
+      <form id="shopping-custom-form" class="mb-4 space-y-2 rounded-lg border border-border p-2.5 dark:border-border-dark" hidden>
         <input
           name="name"
           type="text"
           required
           autocomplete="off"
           placeholder="Item, e.g. Toothpaste"
-          class="w-full rounded-md border border-border bg-white px-2.5 py-1.5 text-sm outline-none focus:border-primary dark:border-border-dark dark:bg-gray-900"
+          class="w-full rounded-md border border-border bg-surface dark:bg-surface-dark px-2.5 py-1.5 text-sm outline-none focus:border-primary dark:border-border-dark"
         />
         <select
           name="aisle"
           aria-label="Aisle"
-          class="w-full rounded-md border border-border bg-white px-2 py-1.5 text-sm outline-none focus:border-primary dark:border-border-dark dark:bg-gray-900"
+          class="w-full rounded-md border border-border bg-surface dark:bg-surface-dark px-2 py-1.5 text-sm outline-none focus:border-primary dark:border-border-dark"
         >
           {AISLES.map((aisle) => <option value={aisle} selected={aisle === "Other"}>{aisle}</option>)}
         </select>
