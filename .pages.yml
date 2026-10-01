@@ -53,5 +53,5 @@ content:
         required: true
         default: Other
         options:
-          values: [Produce, Meat & Seafood, Dairy & Eggs, Bakery, Canned & Jarred, Pasta & Grains, Baking, Spices & Seasonings, Oils & Condiments, Frozen, Other]
+          values: [Produce, Meat & Seafood, Dairy & Eggs, Bakery, Canned & Jarred, Pasta & Grains, Baking, Spices & Seasonings, Oils & Condiments, Frozen, Household & Personal Care, Other]
       - { name: onHand, label: Always on hand, type: boolean, description: "Check for staples like salt, pepper and oil. They'll never be added to a shopping list." }
