@@ -1,4 +1,5 @@
 import { formatQuantity } from "../lib/recipe";
+import { initShoppingList, updateShoppingButton } from "./shopping-list.js";
 
 // ── Sidebar Toggle (mobile) ──
 function initSidebarToggle() {
@@ -81,6 +82,7 @@ function initScaling() {
 
   function updateScale() {
     display.textContent = `×${multiplier}`;
+    view.dataset.multiplier = multiplier;
 
     document.querySelectorAll(".ingredient-item").forEach((item) => {
       const baseQty = Number(item.dataset.baseQty);
@@ -105,6 +107,7 @@ function initScaling() {
 
     // Scaled amounts change line lengths, so re-fit the print card
     paginatePrintCard();
+    updateShoppingButton();
   }
 
   if (decrease) {
@@ -285,6 +288,7 @@ function init() {
   initSearch();
   initScaling();
   initPrintCard();
+  initShoppingList();
   updateActiveLink();
   initWakeLock();
 }

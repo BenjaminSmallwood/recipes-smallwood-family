@@ -8,31 +8,31 @@ servings: 4
 tags:
   - Cozy
 ingredients:
-  - name: Frozen Meatballs
+  - item: Frozen Meatballs
     quantity: 26
     unit: oz
-  - name: Butter
+  - item: Butter
     quantity: 4
     unit: Tablespoon
-  - name: Flour
+  - item: Flour
     quantity: 3
     unit: Tablespoon
-  - name: Beef Broth
+  - item: Beef Broth
     quantity: 2
     unit: Cups
-  - name: Heavy Cream
+  - item: Heavy Cream
     quantity: 1
     unit: Cup
-  - name: Worcestershire Sauce
+  - item: Worcestershire Sauce
     quantity: 1
     unit: Tablespoon
-  - name: Dijon Mustard
+  - item: Dijon Mustard
     quantity: 1
     unit: Teaspoon
-  - name: Allspice
+  - item: Allspice
     quantity: 1
     unit: Dash
-  - name: Nutmeg
+  - item: Nutmeg
     quantity: 1
     unit: Dash
 ---

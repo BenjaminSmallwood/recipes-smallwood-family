@@ -2,6 +2,7 @@
 import BaseLayout from "./BaseLayout.astro";
 import TopBar from "../components/TopBar.astro";
 import Sidebar from "../components/Sidebar.astro";
+import ShoppingList from "../components/ShoppingList.astro";
 import { getCollection } from "astro:content";
 
 interface Props {
@@ -19,9 +20,11 @@ const sortedRecipes = recipes.sort((a, b) => a.data.title.localeCompare(b.data.t
   <TopBar />
   <Sidebar recipes={sortedRecipes} currentSlug={currentSlug} />
 
-  <main class="pt-[57px] md:ml-[300px] print:m-0 print:p-0">
+  <main class="pt-[57px] md:ml-[300px] print:m-0 print:p-0 lg:[.shopping-open_&]:mr-[320px]">
     <div class="p-6 md:p-8 print:p-0">
       <slot />
     </div>
   </main>
+
+  <ShoppingList />
 </BaseLayout>

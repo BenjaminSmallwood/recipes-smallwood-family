@@ -66,7 +66,7 @@ const UNIT_ALIASES: Record<string, string> = {
   g: "gram", gram: "gram",
 };
 
-function normalizeUnit(unit: string): string {
+export function normalizeUnit(unit: string): string {
   const u = unit.toLowerCase().replace(/\./g, "").trim();
   const singular = u.length > 1 && u.endsWith("s") ? u.slice(0, -1) : u;
   return UNIT_ALIASES[u] ?? UNIT_ALIASES[singular] ?? singular;

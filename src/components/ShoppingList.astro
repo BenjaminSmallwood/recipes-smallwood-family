@@ -1,0 +1,55 @@
+---
+// Contents are rendered from localStorage by scripts/shopping-list.js
+---
+
+<div id="shopping-list" class="print:hidden" transition:persist hidden>
+  <button
+    id="shopping-open"
+    class="fixed bottom-4 right-4 z-40 flex items-center gap-2 rounded-full bg-primary px-4 py-2.5 text-sm font-semibold text-black shadow-lg hover:bg-primary-light"
+    aria-label="Show shopping list"
+  >
+    <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+    </svg>
+    Shopping list
+    <span id="shopping-count" class="rounded-full bg-black/15 px-2 text-xs">0</span>
+  </button>
+
+  <aside
+    id="shopping-panel"
+    class="fixed right-0 top-[57px] bottom-0 z-40 flex w-full max-w-[340px] flex-col border-l border-border bg-sidebar shadow-xl lg:w-[320px] lg:shadow-none dark:border-border-dark dark:bg-sidebar-dark"
+    aria-label="Shopping list"
+  >
+    <header class="flex items-center justify-between border-b border-border px-4 py-3 dark:border-border-dark">
+      <h2 class="font-semibold">Shopping list</h2>
+      <button
+        id="shopping-collapse"
+        class="rounded-lg p-1.5 hover:bg-gray-100 dark:hover:bg-gray-800"
+        aria-label="Collapse shopping list"
+      >
+        <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+        </svg>
+      </button>
+    </header>
+
+    <div class="flex-1 overflow-y-auto px-3 py-3">
+      <ul id="shopping-recipes" class="mb-4 flex flex-wrap gap-2 px-1"></ul>
+      <div id="shopping-items"></div>
+      <div id="shopping-checked"></div>
+      <details id="shopping-onhand" class="mt-4 px-1 text-xs text-gray-500 dark:text-gray-400">
+        <summary class="cursor-pointer select-none"></summary>
+        <p class="mt-1.5 leading-relaxed"></p>
+      </details>
+    </div>
+
+    <footer class="border-t border-border px-4 py-3 dark:border-border-dark">
+      <button
+        id="shopping-clear"
+        class="w-full rounded-lg border border-border px-3 py-1.5 text-sm font-medium hover:bg-gray-100 dark:border-border-dark dark:hover:bg-gray-800"
+      >
+        Clear list
+      </button>
+    </footer>
+  </aside>
+</div>
