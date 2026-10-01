@@ -17,6 +17,7 @@ content:
       - { name: prepTime, label: Prep Time, type: string }
       - { name: servings, label: Servings, type: number, required: true }
       - { name: tags, label: Tags, type: string, list: true }
+      - { name: description, label: Description / Notes, type: text, description: "Optional story or notes about the recipe. Shown under the photo; leave a blank line between paragraphs." }
       - { name: sourceName, label: Recipe Originally From, type: string, description: "Family member or website the recipe came from" }
       - { name: sourceUrl, label: Original Recipe URL, type: string, description: "Optional link to the original recipe" }
       - name: ingredients
@@ -53,5 +54,5 @@ content:
         required: true
         default: Other
         options:
-          values: [Produce, Meat & Seafood, Dairy & Eggs, Bakery, Canned & Jarred, Pasta & Grains, Baking, Spices & Seasonings, Oils & Condiments, Frozen, Other]
+          values: [Produce, Meat & Seafood, Dairy & Eggs, Bakery, Canned & Jarred, Pasta & Grains, Baking, Spices & Seasonings, Oils & Condiments, Frozen, Household & Personal Care, Other]
       - { name: onHand, label: Always on hand, type: boolean, description: "Check for staples like salt, pepper and oil. They'll never be added to a shopping list." }

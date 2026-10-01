@@ -12,6 +12,7 @@ export const AISLES = [
   "Spices & Seasonings",
   "Oils & Condiments",
   "Frozen",
+  "Household & Personal Care",
   "Other",
 ] as const;
 
@@ -30,8 +31,15 @@ export interface ListRecipe {
   ingredients: ListIngredient[];
 }
 
+export interface CustomItem {
+  id: string;
+  name: string;
+  aisle: string;
+}
+
 export interface ListLine {
   key: string;
+  custom?: boolean;
   name: string;
   aisle: string;
   onHand: boolean;
@@ -75,7 +83,8 @@ function formatFamily(family: string, baseQty: number, largestUsed: number): str
   return `${formatQuantity(baseQty / size)} ${unit}`;
 }
 
-export function buildShoppingList(recipes: ListRecipe[]): ListLine[] {
+// Recipe ingredients are combined by name; one-off custom items are kept as their own lines
+export function buildShoppingList(recipes: ListRecipe[], custom: CustomItem[] = []): ListLine[] {
   const groups = new Map<string, { line: ListLine; buckets: Map<string, { unit: string; qty: number; family: string | null; largest: number }> }>();
 
   for (const recipe of recipes) {
@@ -108,6 +117,10 @@ export function buildShoppingList(recipes: ListRecipe[]): ListLine[] {
       .join(" + ");
     return line;
   });
+
+  for (const item of custom) {
+    lines.push({ key: `custom:${item.id}`, custom: true, name: item.name, aisle: item.aisle, onHand: false, amount: "", recipes: [] });
+  }
 
   const aisleIndex = (aisle: string) => {
     const i = (AISLES as readonly string[]).indexOf(aisle);

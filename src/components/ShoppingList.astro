@@ -1,5 +1,6 @@
 ---
 // Contents are rendered from localStorage by scripts/shopping-list.js
+import { AISLES } from "../lib/shopping";
 ---
 
 <div id="shopping-list" class="print:hidden" transition:persist hidden>
@@ -22,6 +23,17 @@
   >
     <header class="flex items-center justify-between border-b border-border px-4 py-3 dark:border-border-dark">
       <h2 class="font-semibold">Shopping list</h2>
+      <div class="flex items-center gap-1">
+      <button
+        id="shopping-add-custom"
+        class="rounded-lg p-1.5 hover:bg-gray-100 dark:hover:bg-gray-800"
+        aria-label="Add an item"
+        title="Add an item"
+      >
+        <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v14M5 12h14" />
+        </svg>
+      </button>
       <button
         id="shopping-collapse"
         class="rounded-lg p-1.5 hover:bg-gray-100 dark:hover:bg-gray-800"
@@ -31,9 +43,31 @@
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
         </svg>
       </button>
+      </div>
     </header>
 
     <div class="flex-1 overflow-y-auto px-3 py-3">
+      <form id="shopping-custom-form" class="mb-4 space-y-2 rounded-lg border border-border bg-white p-2.5 dark:border-border-dark dark:bg-gray-800/60" hidden>
+        <input
+          name="name"
+          type="text"
+          required
+          autocomplete="off"
+          placeholder="Item, e.g. Toothpaste"
+          class="w-full rounded-md border border-border bg-white px-2.5 py-1.5 text-sm outline-none focus:border-primary dark:border-border-dark dark:bg-gray-900"
+        />
+        <select
+          name="aisle"
+          aria-label="Aisle"
+          class="w-full rounded-md border border-border bg-white px-2 py-1.5 text-sm outline-none focus:border-primary dark:border-border-dark dark:bg-gray-900"
+        >
+          {AISLES.map((aisle) => <option value={aisle} selected={aisle === "Other"}>{aisle}</option>)}
+        </select>
+        <div class="flex justify-end gap-2">
+          <button type="button" id="shopping-custom-cancel" class="rounded-md px-3 py-1 text-sm hover:bg-gray-100 dark:hover:bg-gray-700">Done</button>
+          <button type="submit" class="rounded-md bg-primary px-3 py-1 text-sm font-medium text-black hover:bg-primary-light">Add</button>
+        </div>
+      </form>
       <ul id="shopping-recipes" class="mb-4 flex flex-wrap gap-2 px-1"></ul>
       <div id="shopping-items"></div>
       <div id="shopping-checked"></div>

@@ -27,6 +27,7 @@ const ingredients = await getRecipeIngredients(recipe);
     servings={data.servings}
     ingredients={ingredients}
     body={body}
+    description={data.description?.trim() || null}
     sourceName={data.sourceName?.trim() || null}
     sourceUrl={data.sourceUrl?.trim() || null}
   />
