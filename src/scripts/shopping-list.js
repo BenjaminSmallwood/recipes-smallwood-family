@@ -181,20 +181,28 @@ export function renderShoppingList() {
   updateShoppingButton();
 }
 
+// Gold when the click adds to the list, outlined (like Print) when it removes
+const ADD_CLASSES = ["bg-primary", "text-white", "hover:bg-primary-dark"];
+const REMOVE_CLASSES = ["hover:bg-gray-100", "dark:hover:bg-gray-800"];
+
 export function updateShoppingButton() {
+  const button = document.getElementById("shopping-add-button");
   const label = document.getElementById("shopping-add-label");
   const recipe = currentRecipe();
-  if (!label || !recipe) return;
+  if (!button || !label || !recipe) return;
 
   const saved = load().recipes[recipe.slug];
   const multiplier = currentMultiplier();
+  const removes = Boolean(saved) && saved.multiplier === multiplier;
   if (!saved) {
     label.textContent = "Add to list";
-  } else if (saved.multiplier === multiplier) {
-    label.textContent = "In list ✓";
+  } else if (removes) {
+    label.textContent = "Remove from list";
   } else {
     label.textContent = `Update list to ×${multiplier}`;
   }
+  button.classList.remove(...(removes ? ADD_CLASSES : REMOVE_CLASSES));
+  button.classList.add(...(removes ? REMOVE_CLASSES : ADD_CLASSES));
 }
 
 function initPanelEvents() {
@@ -275,7 +283,16 @@ function initAddButton() {
     const recipe = currentRecipe();
     if (!recipe) return;
     const state = load();
-    state.recipes[recipe.slug] = { ...recipe, multiplier: currentMultiplier() };
+    const saved = state.recipes[recipe.slug];
+    const multiplier = currentMultiplier();
+    // Already in the list at this amount: the button reads "Remove from list"
+    if (saved && saved.multiplier === multiplier) {
+      delete state.recipes[recipe.slug];
+      save(state);
+      renderShoppingList();
+      return;
+    }
+    state.recipes[recipe.slug] = { ...recipe, multiplier };
     save(state);
     setCollapsed(false);
   });
