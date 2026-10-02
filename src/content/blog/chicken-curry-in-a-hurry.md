@@ -8,6 +8,7 @@ tags:
   - Dinner
   - Quick
   - Cozy
+  - Family
 description: Family Fun Magazine had this great recipe, it is very quick to prepare, but because of the curry and coconut milk it doesn't taste like it! Comfort Food. Not spicy.
 sourceName: Mom (Gelynne)
 ingredients:

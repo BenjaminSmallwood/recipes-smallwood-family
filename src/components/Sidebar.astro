@@ -29,8 +29,8 @@ const grouped = recipes.reduce(
   {} as Record<string, Recipe[]>
 );
 
-// Meal types first, then the rest, then seasons in calendar order; anything new goes alphabetically after
-const GROUP_ORDER = ["Dinner", "Dessert", "Quick", "Cozy", "Spring", "Summer", "Fall", "Winter"];
+// Meal types and Family first, then the rest, then seasons in calendar order; anything new goes alphabetically after
+const GROUP_ORDER = ["Dinner", "Dessert", "Family", "Quick", "Cozy", "Spring", "Summer", "Fall", "Winter"];
 const rank = (group: string) => {
   const i = GROUP_ORDER.indexOf(group);
   return i === -1 ? GROUP_ORDER.length : i;

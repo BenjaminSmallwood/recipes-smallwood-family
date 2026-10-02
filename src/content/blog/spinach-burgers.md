@@ -4,6 +4,7 @@ category: Dinner
 servings: 10
 tags:
   - Dinner
+  - Family
 description: The very precious couple that led us to the Lord gave me this recipe the year Bruce and I got married (1987). I still make this recipe at least once a month. The measurements are approximate, so you may have to play with it a little to get the consistency you like, but you can't make it wrong so give it a try. My kids (and Reid) beg for this meal.
 sourceName: Mom (Gelynne)
 ingredients:
