@@ -1,5 +1,6 @@
 ---
 import RecipeCard from "./RecipeCard.astro";
+import ImagePlaceholder from "./ImagePlaceholder.astro";
 import { formatQuantity, parseSteps } from "../lib/recipe";
 import type { RecipeIngredient } from "../lib/ingredients";
 
@@ -60,7 +61,7 @@ const shoppingData = JSON.stringify({
 
   <script id="recipe-shopping-data" type="application/json" is:inline set:html={shoppingData} />
 
-  {image && (
+  {image ? (
     <div class="mb-6 overflow-hidden rounded-xl print:hidden">
       <img
         src={image}
@@ -69,6 +70,8 @@ const shoppingData = JSON.stringify({
         onerror="this.style.display='none'"
       />
     </div>
+  ) : (
+    <ImagePlaceholder class="mb-6 h-64 rounded-xl print:hidden" />
   )}
 
   {descriptionParagraphs.length > 0 && (

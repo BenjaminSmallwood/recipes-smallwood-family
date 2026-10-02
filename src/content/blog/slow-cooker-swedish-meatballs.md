@@ -6,7 +6,10 @@ cookTime: "120"
 prepTime: "30"
 servings: 4
 tags:
+  - Dinner
   - Cozy
+  - Fall
+  - Winter
 ingredients:
   - item: Frozen Meatballs
     quantity: 26

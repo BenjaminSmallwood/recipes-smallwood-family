@@ -1,6 +1,7 @@
 ---
 import { getCollection } from "astro:content";
 import RecipeLayout from "../layouts/RecipeLayout.astro";
+import ImagePlaceholder from "../components/ImagePlaceholder.astro";
 
 const recipes = await getCollection("recipes");
 const sorted = recipes.sort((a, b) => a.data.title.localeCompare(b.data.title));
@@ -20,7 +21,7 @@ const sorted = recipes.sort((a, b) => a.data.title.localeCompare(b.data.title));
         <a
           href={`/recipes/${recipe.id}`}
           data-title={recipe.data.title.toLowerCase()}
-          data-category={recipe.data.category.toLowerCase()}
+          data-category={[recipe.data.category, ...(recipe.data.tags ?? [])].join(" ").toLowerCase()}
           data-ingredients={recipe.data.ingredients.map((ing) => ing.item).join("|")}
           class="recipe-card group block overflow-hidden rounded-xl border border-border bg-surface dark:bg-surface-dark shadow-sm transition-all hover:-translate-y-1 hover:shadow-md dark:border-border-dark"
         >
@@ -34,11 +35,7 @@ const sorted = recipes.sort((a, b) => a.data.title.localeCompare(b.data.title));
               />
             </div>
           ) : (
-            <div class="aspect-[4/3] bg-gradient-to-br from-primary/10 to-primary/30 flex items-center justify-center">
-              <svg class="h-12 w-12 text-primary/60" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 3h18v18H3V3zm6 6h6v6H9V9z" />
-              </svg>
-            </div>
+            <ImagePlaceholder class="aspect-[4/3]" />
           )}
           <div class="p-4">
             <div class="text-xs font-medium uppercase tracking-wide text-primary mb-1">

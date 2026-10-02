@@ -6,7 +6,10 @@ cookTime: "60"
 prepTime: "15"
 servings: 6
 tags:
+  - Dinner
   - Cozy
+  - Fall
+  - Winter
 ingredients:
   - item: Ground Beef
     quantity: 1

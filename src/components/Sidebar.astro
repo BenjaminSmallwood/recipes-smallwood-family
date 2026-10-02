@@ -4,28 +4,38 @@ interface Recipe {
   data: {
     title: string;
     category: string;
+    tags?: string[];
     ingredients: { item: string }[];
   };
 }
 
 interface Props {
   recipes: Recipe[];
-  currentSlug?: string;
 }
 
-const { recipes, currentSlug } = Astro.props;
+const { recipes } = Astro.props;
+
+// A recipe appears under its category and under each of its tags
+const groupsFor = (recipe: Recipe) => [...new Set([recipe.data.category, ...(recipe.data.tags ?? [])])];
 
 const grouped = recipes.reduce(
   (acc, recipe) => {
-    const cat = recipe.data.category;
-    if (!acc[cat]) acc[cat] = [];
-    acc[cat].push(recipe);
+    for (const group of groupsFor(recipe)) {
+      if (!acc[group]) acc[group] = [];
+      acc[group].push(recipe);
+    }
     return acc;
   },
   {} as Record<string, Recipe[]>
 );
 
-const categories = Object.keys(grouped).sort();
+// Meal types first, then the rest, then seasons in calendar order; anything new goes alphabetically after
+const GROUP_ORDER = ["Dinner", "Dessert", "Quick", "Cozy", "Spring", "Summer", "Fall", "Winter"];
+const rank = (group: string) => {
+  const i = GROUP_ORDER.indexOf(group);
+  return i === -1 ? GROUP_ORDER.length : i;
+};
+const categories = Object.keys(grouped).sort((a, b) => rank(a) - rank(b) || a.localeCompare(b));
 ---
 
 <nav
@@ -45,7 +55,7 @@ const categories = Object.keys(grouped).sort();
   <p id="search-empty" class="px-3 py-2 text-sm text-gray-500 dark:text-gray-400" hidden>No recipes match your search.</p>
   <div id="sidebar-recipes" class="space-y-2">
     {categories.map((category) => (
-      <details class="recipe-category group" open>
+      <details class="recipe-category group">
         <summary class="flex cursor-pointer items-center justify-between rounded-lg px-3 py-2 font-semibold text-sm hover:bg-gray-100 dark:hover:bg-gray-800 select-none">
           <span>{category}</span>
           <svg class="h-4 w-4 transition-transform group-open:rotate-90" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -57,14 +67,9 @@ const categories = Object.keys(grouped).sort();
             <li>
               <a
                 href={`/recipes/${recipe.id}`}
-                class:list={[
-                  "recipe-link block rounded-lg px-3 py-1.5 text-sm transition-colors",
-                  recipe.id === currentSlug
-                    ? "bg-primary/10 text-primary font-medium"
-                    : "hover:bg-gray-100 dark:hover:bg-gray-800",
-                ]}
+                class="recipe-link block rounded-lg px-3 py-1.5 text-sm transition-colors hover:bg-gray-100 dark:hover:bg-gray-800"
                 data-title={recipe.data.title.toLowerCase()}
-                data-category={recipe.data.category.toLowerCase()}
+                data-category={groupsFor(recipe).join(" ").toLowerCase()}
                 data-ingredients={recipe.data.ingredients.map((ing) => ing.item).join("|")}
               >
                 {recipe.data.title}
@@ -83,10 +88,3 @@ const categories = Object.keys(grouped).sort();
   id="sidebar-overlay"
   class="print:hidden fixed inset-0 top-[57px] z-30 hidden bg-black/40 md:hidden"
 ></div>
-
-<script is:inline>
-  // Collapse categories on mobile
-  if (window.innerWidth < 768) {
-    document.querySelectorAll('.recipe-category').forEach(d => d.open = false);
-  }
-</script>

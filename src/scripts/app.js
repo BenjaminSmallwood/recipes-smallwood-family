@@ -57,6 +57,8 @@ function matchRecipe(el, words) {
   return { match, matchedIngredients };
 }
 
+let wasSearching = false;
+
 function filterRecipes(query) {
   const words = query.toLowerCase().trim().split(/\s+/).filter(Boolean);
 
@@ -78,6 +80,10 @@ function filterRecipes(query) {
     cat.style.display = anyVisible ? "" : "none";
     if (words.length && anyVisible) cat.open = true;
   });
+  // Searching opens every group with a match; clearing the search closes them all again
+  if (wasSearching && !words.length) categories.forEach((cat) => (cat.open = false));
+  wasSearching = words.length > 0;
+
   const sidebarEmpty = document.getElementById("search-empty");
   if (sidebarEmpty) sidebarEmpty.hidden = [...categories].some((cat) => cat.style.display !== "none");
 
@@ -241,19 +247,6 @@ function initPrintCard() {
 
 window.addEventListener("beforeprint", paginatePrintCard);
 
-// ── Active Sidebar Link ──
-function updateActiveLink() {
-  const path = window.location.pathname.replace(/\/$/, "");
-  document.querySelectorAll(".recipe-link").forEach((link) => {
-    const href = link.getAttribute("href").replace(/\/$/, "");
-    if (href === path) {
-      link.className = "recipe-link block rounded-lg px-3 py-1.5 text-sm transition-colors bg-primary/10 text-primary font-medium";
-    } else {
-      link.className = "recipe-link block rounded-lg px-3 py-1.5 text-sm transition-colors hover:bg-gray-100 dark:hover:bg-gray-800";
-    }
-  });
-}
-
 // ── Wake Lock ──
 let wakeLock = null;
 let wakeLockDesired = false;
@@ -368,7 +361,6 @@ function init() {
   initScaling();
   initPrintCard();
   initShoppingList();
-  updateActiveLink();
   initWakeLock();
   initThemeToggle();
 }

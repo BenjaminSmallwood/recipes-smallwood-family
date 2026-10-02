@@ -6,7 +6,10 @@ cookTime: 8 hours
 prepTime: "5"
 servings: 6
 tags:
+  - Dinner
   - Cozy
+  - Fall
+  - Winter
 sourceName: The Chunky Chef
 sourceUrl: https://www.thechunkychef.com/slow-cooker-creamy-white-chicken-chili/
 ingredients:

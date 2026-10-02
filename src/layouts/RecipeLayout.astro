@@ -7,10 +7,9 @@ import { getCollection } from "astro:content";
 
 interface Props {
   title?: string;
-  currentSlug?: string;
 }
 
-const { title, currentSlug } = Astro.props;
+const { title } = Astro.props;
 
 const recipes = await getCollection("recipes");
 const sortedRecipes = recipes.sort((a, b) => a.data.title.localeCompare(b.data.title));
@@ -18,7 +17,7 @@ const sortedRecipes = recipes.sort((a, b) => a.data.title.localeCompare(b.data.t
 
 <BaseLayout title={title}>
   <TopBar />
-  <Sidebar recipes={sortedRecipes} currentSlug={currentSlug} />
+  <Sidebar recipes={sortedRecipes} />
 
   <main class="pt-[57px] md:ml-[300px] print:m-0 print:p-0 lg:[.shopping-open_&]:mr-[320px]">
     <div class="p-6 md:p-8 print:p-0">

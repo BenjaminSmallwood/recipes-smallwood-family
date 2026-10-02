@@ -5,6 +5,9 @@ image: /Jambalaya.jpg
 cookTime: "20"
 prepTime: "15"
 servings: 6
+tags:
+  - Dinner
+  - Quick
 ingredients:
   - item: Olive Oil
     quantity: 2

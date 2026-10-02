@@ -6,6 +6,8 @@ cookTime: "15"
 prepTime: "15"
 servings: 4
 tags:
+  - Dinner
+  - Quick
   - Cozy
 ingredients:
   - item: Olive Oil

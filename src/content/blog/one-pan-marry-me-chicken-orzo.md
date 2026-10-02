@@ -5,6 +5,9 @@ image: /marry-me-chicken-orzo.jpg
 cookTime: "25"
 prepTime: "10"
 servings: 6
+tags:
+  - Dinner
+  - Quick
 sourceName: Kale Junkie
 sourceUrl: https://kalejunkie.com/one-pan-marry-me-chicken-orzo/
 ingredients:

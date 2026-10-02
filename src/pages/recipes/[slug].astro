@@ -17,7 +17,7 @@ const { data, body } = recipe;
 const ingredients = await getRecipeIngredients(recipe);
 ---
 
-<RecipeLayout title={`${data.title} | Smallwood Family Recipes`} currentSlug={recipe.id}>
+<RecipeLayout title={`${data.title} | Smallwood Family Recipes`}>
   <RecipeView
     slug={recipe.id}
     title={data.title}
