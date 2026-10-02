@@ -7,7 +7,7 @@ const sorted = recipes.sort((a, b) => a.data.title.localeCompare(b.data.title));
 ---
 
 <RecipeLayout title="Smallwood Family Recipes">
-  <div class="max-w-5xl mx-auto">
+  <div>
     <header class="mb-8 text-center">
       <h1 class="text-4xl font-bold mb-2">Welcome!</h1>
       <p class="text-gray-500 dark:text-gray-400">
@@ -15,7 +15,7 @@ const sorted = recipes.sort((a, b) => a.data.title.localeCompare(b.data.title));
       </p>
     </header>
 
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+    <div class="recipe-grid grid gap-6">
       {sorted.map((recipe) => (
         <a
           href={`/recipes/${recipe.id}`}

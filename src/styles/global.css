@@ -3,8 +3,8 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 @theme {
-  --color-primary: #e5b833;
-  --color-primary-light: #f0cb4a;
+  --color-primary: #9e7600;
+  --color-primary-dark: #8a6700;
   --color-surface: #ffffff;
   --color-surface-dark: #1a1a1a;
   --color-sidebar: #ffffff;
@@ -13,6 +13,13 @@
   --color-text-dark: #e0e0e0;
   --color-border: #e5e7eb;
   --color-border-dark: #2a2a2a;
+}
+
+/* Home page grid: as many columns as fit (cards at least 240px wide), up to 5.
+   Based on the space the grid actually has, so it reflows when the sidebar or
+   shopping list takes room. 6rem = the four gaps (gap-6) between 5 columns. */
+.recipe-grid {
+  grid-template-columns: repeat(auto-fill, minmax(max(min(240px, 100%), calc((100% - 6rem) / 5)), 1fr));
 }
 
 /* Square corners everywhere (overrides all rounded-* utilities) */

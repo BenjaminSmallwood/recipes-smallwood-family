@@ -85,7 +85,7 @@ function lineHtml(line, checked) {
         aria-pressed="${checked}"
         class="flex min-w-0 flex-1 items-start gap-2.5 rounded-lg px-2 py-1.5 text-left text-sm hover:bg-gray-100 dark:hover:bg-gray-800"
       >
-        <span class="mt-0.5 flex h-4 w-4 shrink-0 items-center justify-center rounded-full border ${checked ? "border-primary bg-primary text-black" : "border-gray-400"}">
+        <span class="mt-0.5 flex h-4 w-4 shrink-0 items-center justify-center rounded-full border ${checked ? "border-primary bg-primary text-white" : "border-gray-400"}">
           ${checked ? `<svg class="h-3 w-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7" /></svg>` : ""}
         </span>
         <span class="min-w-0 flex-1 ${checked ? "line-through" : ""}">

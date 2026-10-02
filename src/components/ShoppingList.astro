@@ -6,14 +6,14 @@ import { AISLES } from "../lib/shopping";
 <div id="shopping-list" class="print:hidden" transition:persist hidden>
   <button
     id="shopping-open"
-    class="fixed bottom-4 right-4 z-40 flex items-center gap-2 rounded-full bg-primary px-4 py-2.5 text-sm font-semibold text-black shadow-lg hover:bg-primary-light"
+    class="fixed bottom-4 right-4 z-40 flex items-center gap-2 rounded-full bg-primary px-4 py-2.5 text-sm font-semibold text-white shadow-lg hover:bg-primary-dark"
     aria-label="Show shopping list"
   >
     <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
     </svg>
     Shopping list
-    <span id="shopping-count" class="rounded-full bg-black/15 px-2 text-xs">0</span>
+    <span id="shopping-count" class="rounded-full bg-white/20 px-2 text-xs">0</span>
   </button>
 
   <!-- Mobile only: dims the page behind the slide-over; tapping it closes the list -->
@@ -69,7 +69,7 @@ import { AISLES } from "../lib/shopping";
         </select>
         <div class="flex justify-end gap-2">
           <button type="button" id="shopping-custom-cancel" class="rounded-md px-3 py-1 text-sm hover:bg-gray-100 dark:hover:bg-gray-700">Done</button>
-          <button type="submit" class="rounded-md bg-primary px-3 py-1 text-sm font-medium text-black hover:bg-primary-light">Add</button>
+          <button type="submit" class="rounded-md bg-primary px-3 py-1 text-sm font-medium text-white hover:bg-primary-dark">Add</button>
         </div>
       </form>
       <ul id="shopping-recipes" class="mb-4 flex flex-wrap gap-2 px-1"></ul>
