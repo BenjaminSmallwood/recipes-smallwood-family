@@ -19,7 +19,10 @@ const sorted = recipes.sort((a, b) => a.data.title.localeCompare(b.data.title));
       {sorted.map((recipe) => (
         <a
           href={`/recipes/${recipe.id}`}
-          class="group block overflow-hidden rounded-xl border border-border bg-surface dark:bg-surface-dark shadow-sm transition-all hover:-translate-y-1 hover:shadow-md dark:border-border-dark"
+          data-title={recipe.data.title.toLowerCase()}
+          data-category={recipe.data.category.toLowerCase()}
+          data-ingredients={recipe.data.ingredients.map((ing) => ing.item).join("|")}
+          class="recipe-card group block overflow-hidden rounded-xl border border-border bg-surface dark:bg-surface-dark shadow-sm transition-all hover:-translate-y-1 hover:shadow-md dark:border-border-dark"
         >
           {recipe.data.image ? (
             <div class="aspect-[4/3] overflow-hidden bg-gray-100 dark:bg-gray-900">
@@ -57,5 +60,6 @@ const sorted = recipes.sort((a, b) => a.data.title.localeCompare(b.data.title));
         </a>
       ))}
     </div>
+    <p id="grid-empty" class="py-12 text-center text-gray-500 dark:text-gray-400" hidden>No recipes match your search.</p>
   </div>
 </RecipeLayout>

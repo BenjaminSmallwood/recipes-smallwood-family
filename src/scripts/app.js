@@ -40,45 +40,69 @@ function initSidebarToggle() {
 }
 
 // ── Search Filtering ──
-function initSearch() {
-  const desktop = document.getElementById("recipe-search");
-  const mobile = document.getElementById("recipe-search-mobile");
+// Every word must appear somewhere in the title, category or ingredients,
+// so "chicken beans" finds recipes with both. Works on any element carrying
+// data-title / data-category / data-ingredients (sidebar links, home page cards).
+function matchRecipe(el, words) {
+  const title = el.dataset.title || "";
+  const category = el.dataset.category || "";
+  const ingredients = (el.dataset.ingredients || "").split("|").filter(Boolean);
+  const inIngredients = (word) => ingredients.some((ing) => ing.toLowerCase().includes(word));
+  const match = words.every((word) => title.includes(word) || category.includes(word) || inIngredients(word));
+  // Ingredients that explain the match when the title alone doesn't
+  const titleWords = words.filter((word) => title.includes(word));
+  const matchedIngredients = match && titleWords.length < words.length
+    ? ingredients.filter((ing) => words.some((word) => !title.includes(word) && ing.toLowerCase().includes(word)))
+    : [];
+  return { match, matchedIngredients };
+}
 
-  function filterRecipes(query) {
-    const categories = document.querySelectorAll(".recipe-category");
-    categories.forEach((cat) => {
-      const links = cat.querySelectorAll(".recipe-link");
-      let anyVisible = false;
+function filterRecipes(query) {
+  const words = query.toLowerCase().trim().split(/\s+/).filter(Boolean);
 
-      links.forEach((link) => {
-        const title = link.getAttribute("data-title") || "";
-        const match = !query || title.includes(query);
-        link.closest("li").style.display = match ? "" : "none";
-        if (match) anyVisible = true;
-      });
+  const categories = document.querySelectorAll(".recipe-category");
+  categories.forEach((cat) => {
+    let anyVisible = false;
+    cat.querySelectorAll(".recipe-link").forEach((link) => {
+      const { match, matchedIngredients } = matchRecipe(link, words);
+      link.closest("li").style.display = match ? "" : "none";
+      if (match) anyVisible = true;
 
-      cat.style.display = anyVisible ? "" : "none";
-      if (query && anyVisible) cat.open = true;
+      const hint = link.querySelector(".recipe-match");
+      if (!hint) return;
+      hint.hidden = !matchedIngredients.length;
+      hint.textContent = matchedIngredients.length
+        ? `with ${matchedIngredients.slice(0, 2).join(", ")}${matchedIngredients.length > 2 ? ` +${matchedIngredients.length - 2} more` : ""}`
+        : "";
     });
-  }
+    cat.style.display = anyVisible ? "" : "none";
+    if (words.length && anyVisible) cat.open = true;
+  });
+  const sidebarEmpty = document.getElementById("search-empty");
+  if (sidebarEmpty) sidebarEmpty.hidden = [...categories].some((cat) => cat.style.display !== "none");
 
-  function onInput(e) {
-    const query = e.target.value.toLowerCase().trim();
-    // Sync both inputs
-    if (desktop && e.target !== desktop) desktop.value = e.target.value;
-    if (mobile && e.target !== mobile) mobile.value = e.target.value;
-    filterRecipes(query);
-  }
+  // Home page grid (only present on the index page)
+  const cards = document.querySelectorAll(".recipe-card");
+  let anyCard = false;
+  cards.forEach((card) => {
+    const { match } = matchRecipe(card, words);
+    card.hidden = !match;
+    if (match) anyCard = true;
+  });
+  const gridEmpty = document.getElementById("grid-empty");
+  if (gridEmpty) gridEmpty.hidden = anyCard || !cards.length;
+}
 
-  // Both inputs are persisted across navigations — only bind once
-  if (desktop && !desktop.dataset.searchBound) {
-    desktop.dataset.searchBound = "true";
-    desktop.addEventListener("input", onInput);
-  }
-  if (mobile && !mobile.dataset.searchBound) {
-    mobile.dataset.searchBound = "true";
-    mobile.addEventListener("input", onInput);
-  }
+function initSearch() {
+  const input = document.getElementById("recipe-search");
+  if (!input) return;
+
+  // The search box is persisted across navigations, so re-apply its query to the new page
+  filterRecipes(input.value);
+
+  if (input.dataset.searchBound) return;
+  input.dataset.searchBound = "true";
+  input.addEventListener("input", () => filterRecipes(input.value));
 }
 
 // ── Recipe Scaling ──

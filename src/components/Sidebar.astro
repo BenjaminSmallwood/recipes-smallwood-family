@@ -4,6 +4,7 @@ interface Recipe {
   data: {
     title: string;
     category: string;
+    ingredients: { item: string }[];
   };
 }
 
@@ -32,14 +33,16 @@ const categories = Object.keys(grouped).sort();
   class="print:hidden fixed left-0 top-[57px] bottom-0 z-40 w-[300px] -translate-x-full overflow-y-auto border-r border-border bg-sidebar p-4 transition-transform md:translate-x-0 dark:border-border-dark dark:bg-sidebar-dark"
   transition:persist
 >
-  <div class="mb-3 md:hidden">
+  <!-- Stays put while the recipe list scrolls; -top-4 cancels the nav's p-4 -->
+  <div class="sticky -top-4 z-10 -mx-4 -mt-4 mb-3 bg-sidebar px-4 pt-4 pb-1 dark:bg-sidebar-dark">
     <input
-      id="recipe-search-mobile"
+      id="recipe-search"
       type="search"
-      placeholder="Search recipes..."
+      placeholder="Search recipes or ingredients..."
       class="w-full rounded-lg border border-border bg-surface dark:bg-surface-dark px-3 py-1.5 text-sm outline-none focus:border-primary dark:border-border-dark dark:text-text-dark"
     />
   </div>
+  <p id="search-empty" class="px-3 py-2 text-sm text-gray-500 dark:text-gray-400" hidden>No recipes match your search.</p>
   <div id="sidebar-recipes" class="space-y-2">
     {categories.map((category) => (
       <details class="recipe-category group" open>
@@ -61,8 +64,11 @@ const categories = Object.keys(grouped).sort();
                     : "hover:bg-gray-100 dark:hover:bg-gray-800",
                 ]}
                 data-title={recipe.data.title.toLowerCase()}
+                data-category={recipe.data.category.toLowerCase()}
+                data-ingredients={recipe.data.ingredients.map((ing) => ing.item).join("|")}
               >
                 {recipe.data.title}
+                <span class="recipe-match block text-xs font-normal text-gray-500 dark:text-gray-400" hidden></span>
               </a>
             </li>
           ))}
